@@ -1228,26 +1228,7 @@ nav.open .btn-nav{background:linear-gradient(135deg,#FF7A00,#FFB347)!important;c
   <div class="ac-outer">
     <div class="ac-track-wrap rv rv-up d2" id="acWrap">
     <div class="ac-track" id="acTrack">
-      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
-        <div class="ac-thumb" style="background:linear-gradient(135deg,#1a0d2e,#3b1865)">🏠<div class="ac-play">▶</div></div>
-        <div class="ac-body"><div class="ac-dur">12 min · Básico</div><div class="ac-title">Cómo comprar tu primera propiedad</div></div>
-      </div>
-      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
-        <div class="ac-thumb" style="background:linear-gradient(135deg,#0d1b35,#1a3460)">🏦<div class="ac-play">▶</div></div>
-        <div class="ac-body"><div class="ac-dur">18 min · Intermedio</div><div class="ac-title">Crédito hipotecario explicado paso a paso</div></div>
-      </div>
-      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
-        <div class="ac-thumb" style="background:linear-gradient(135deg,#0d2318,#144d30)">🔄<div class="ac-play">▶</div></div>
-        <div class="ac-body"><div class="ac-dur">10 min · Básico</div><div class="ac-title">¿Qué es una permuta y cómo funciona?</div></div>
-      </div>
-      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
-        <div class="ac-thumb" style="background:linear-gradient(135deg,#1a1500,#3d3000)">📈<div class="ac-play">▶</div></div>
-        <div class="ac-body"><div class="ac-dur">22 min · Avanzado</div><div class="ac-title">Cómo invertir en bienes raíces desde cero</div></div>
-      </div>
-      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
-        <div class="ac-thumb" style="background:linear-gradient(135deg,#1a0505,#3d1010)">📊<div class="ac-play">▶</div></div>
-        <div class="ac-body"><div class="ac-dur">15 min · Avanzado</div><div class="ac-title">Cómo valuar correctamente un inmueble</div></div>
-      </div>
+      <!-- Videos loaded dynamically from Supabase table 'videos' -->
     </div>
   </div>
   <div class="carousel-controls" style="margin-top:1.5rem">
@@ -2514,10 +2495,24 @@ function mapProp(row) {
   let feats = [];
   try { feats = JSON.parse(row.caracteristicas || '[]'); } catch(e) {}
 
-  // Gallery: if imagen is a URL use it, else use bg theme
+  // Gallery: parse imagenes (JSON array from Supabase) for all photos
   let gallery = [bg, bg, bg, bg, bg];
   let imgUrl = null;
-  if (row.imagen && row.imagen.startsWith('http')) {
+
+  // Try imagenes column first (JSON array of URLs)
+  if (row.imagenes) {
+    try {
+      const imgs = JSON.parse(row.imagenes);
+      if (Array.isArray(imgs) && imgs.length > 0) {
+        // Fill gallery with real URLs, pad remaining with bg theme
+        gallery = imgs.map(u => (u && u.startsWith('http')) ? u : bg);
+        while (gallery.length < 5) gallery.push(bg);
+        imgUrl = imgs[0] || null;
+      }
+    } catch(e) {}
+  }
+  // Fallback to single imagen column
+  if (!imgUrl && row.imagen && row.imagen.startsWith('http')) {
     imgUrl = row.imagen;
     gallery = [row.imagen, bg, bg, bg, bg];
   }
@@ -2550,38 +2545,45 @@ function mapProp(row) {
 // Load properties from Supabase
 async function loadPropsFromSupabase() {
   if (!_supabase) {
-    console.warn('Supabase not configured. Using fallback data.');
+    console.warn('[Supabase] SDK no disponible. Usando fallback.');
     useFallbackProps();
+    renderCarousel(); initAcDots(); reinitCardEffects();
     return;
   }
 
-  // Show loading state
+  // Loading state
   const track = document.getElementById('ct');
-  if (track) {
-    track.innerHTML = '<div style="display:flex;align-items:center;gap:.8rem;padding:2rem;color:rgba(255,255,255,.5);font-size:.85rem"><div class="prop-loader"></div>Cargando propiedades...</div>';
-  }
+  if (track) track.innerHTML = '<div style="display:flex;align-items:center;gap:.8rem;padding:2rem;color:rgba(255,255,255,.5);font-size:.85rem"><div class="prop-loader"></div>Cargando propiedades...</div>';
 
   try {
+    console.log('[Supabase] Consultando tabla propiedades...');
+
     const { data, error } = await _supabase
       .from('propiedades')
       .select('*')
+      .eq('activo', true)
+      .or('vendido.is.null,vendido.eq.false')
       .order('id', { ascending: true });
 
-    if (error) throw error;
+    if (error) {
+      console.error('[Supabase] Error en query:', error.message, error.code, error.hint);
+      throw error;
+    }
+
+    console.log('[Supabase] Respuesta recibida. Filas:', data ? data.length : 0);
 
     if (data && data.length > 0) {
       PROPS = data.map(mapProp);
-      console.log('✓ Propiedades cargadas desde Supabase:', PROPS.length);
+      console.log('[Supabase] ✓ Propiedades mapeadas:', PROPS.length);
     } else {
-      console.warn('No hay propiedades en Supabase. Usando datos de ejemplo.');
+      console.warn('[Supabase] Sin resultados. Verifica: activo=true y vendido=false en la tabla.');
       useFallbackProps();
     }
   } catch (err) {
-    console.error('Error cargando Supabase:', err.message);
+    console.error('[Supabase] Fallo general:', err.message || err);
     useFallbackProps();
   }
 
-  // Render carousel with loaded data
   renderCarousel();
   initAcDots();
   reinitCardEffects();
@@ -2597,10 +2599,113 @@ function useFallbackProps() {
   ];
 }
 
+
+/* ════════════════════════════════════════════
+   ACADEMIA VIDEOS — Loaded from Supabase
+   Table: videos
+   Columns: id, titulo, duracion, nivel, url_video, url_miniatura, descripcion, activo, orden
+   ════════════════════════════════════════════ */
+
+const FALLBACK_VIDEOS = [
+  {titulo:'Cómo comprar tu primera propiedad',     duracion:'12 min',nivel:'Básico',     url_video:'',url_miniatura:'',emoji:'🏠',bg:'linear-gradient(135deg,#1a0d2e,#3b1865)'},
+  {titulo:'Crédito hipotecario paso a paso',        duracion:'18 min',nivel:'Intermedio', url_video:'',url_miniatura:'',emoji:'🏦',bg:'linear-gradient(135deg,#0d1b35,#1a3460)'},
+  {titulo:'¿Qué es una permuta y cómo funciona?',  duracion:'10 min',nivel:'Básico',     url_video:'',url_miniatura:'',emoji:'🔄',bg:'linear-gradient(135deg,#0d2318,#144d30)'},
+  {titulo:'Cómo invertir en bienes raíces',        duracion:'22 min',nivel:'Avanzado',   url_video:'',url_miniatura:'',emoji:'📈',bg:'linear-gradient(135deg,#1a1500,#3d3000)'},
+  {titulo:'Cómo valuar correctamente un inmueble', duracion:'15 min',nivel:'Avanzado',   url_video:'',url_miniatura:'',emoji:'📊',bg:'linear-gradient(135deg,#1a0505,#3d1010)'},
+];
+
+const NIVEL_BG = {
+  'Básico':     'linear-gradient(135deg,#0d2318,#144d30)',
+  'Intermedio': 'linear-gradient(135deg,#0d1b35,#1a3460)',
+  'Avanzado':   'linear-gradient(135deg,#1a0505,#3d1010)',
+};
+
+function buildVideoCard(v){
+  const bg       = v.bg || NIVEL_BG[v.nivel] || 'linear-gradient(135deg,#1a0d2e,#3b1865)';
+  const emoji    = v.emoji || '📹';
+  const duracion = v.duracion || '';
+  const nivel    = v.nivel || '';
+  const titulo   = v.titulo || 'Sin título';
+  const urlVideo = v.url_video || '';
+
+  // Thumbnail: real image if available, else colored background with emoji
+  const thumbContent = (v.url_miniatura && v.url_miniatura.startsWith('http'))
+    ? '<img src="'+v.url_miniatura+'" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.style.background=''+bg+'';this.remove()">'
+    : '<span style="font-size:2rem">'+emoji+'</span>';
+
+  const thumbBg = (v.url_miniatura && v.url_miniatura.startsWith('http')) ? '#0a1428' : bg;
+
+  const onclick = urlVideo
+    ? 'window.open("'+urlVideo+'","_blank")'
+    : 'showToast('📺',''+titulo+'','Próximamente')';
+
+  return '<div class="ac-card" onclick="'+onclick+'">'
+    +'<div class="ac-thumb" style="background:'+thumbBg+';display:flex;align-items:center;justify-content:center;overflow:hidden">'
+    +thumbContent
+    +'<div class="ac-play">▶</div>'
+    +'</div>'
+    +'<div class="ac-body">'
+    +(duracion||nivel ? '<div class="ac-dur">'+(duracion?duracion+' · ':'')+nivel+'</div>' : '')
+    +'<div class="ac-title">'+titulo+'</div>'
+    +'</div>'
+    +'</div>';
+}
+
+async function loadVideosFromSupabase(){
+  const track = document.getElementById('acTrack');
+  if(!track) return;
+
+  if(!_supabase){
+    console.warn('[Academia] Supabase no disponible. Usando videos de ejemplo.');
+    renderFallbackVideos();
+    return;
+  }
+
+  try {
+    console.log('[Academia] Consultando tabla videos...');
+
+    const {data, error} = await _supabase
+      .from('videos')
+      .select('*')
+      .eq('activo', true)
+      .order('orden', {ascending:true});
+
+    if(error){
+      // Table might not exist yet — silently use fallback
+      console.warn('[Academia] Error o tabla no existe:', error.message, '— usando videos de ejemplo.');
+      renderFallbackVideos();
+      return;
+    }
+
+    console.log('[Academia] Videos recibidos:', data ? data.length : 0);
+
+    if(data && data.length > 0){
+      track.innerHTML = data.map(buildVideoCard).join('');
+      console.log('[Academia] ✓ Videos cargados desde Supabase.');
+    } else {
+      console.warn('[Academia] Tabla videos vacía — usando videos de ejemplo.');
+      renderFallbackVideos();
+    }
+  } catch(err){
+    console.error('[Academia] Fallo:', err.message||err);
+    renderFallbackVideos();
+  }
+
+  // Re-init drag after cards are rendered
+  initAcDrag();
+  initAcDots();
+}
+
+function renderFallbackVideos(){
+  const track = document.getElementById('acTrack');
+  if(track) track.innerHTML = FALLBACK_VIDEOS.map(buildVideoCard).join('');
+}
+
 /* ── INIT ── */
 // renderCarousel() is now called by loadPropsFromSupabase()
 loadPropsFromSupabase();
-initAcDrag();
+loadVideosFromSupabase();
+// initAcDrag called after videos load
 initReveal();
 initStats();
 
