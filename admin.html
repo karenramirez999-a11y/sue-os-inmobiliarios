@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin · Sueños Inmobiliarios</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050B18;--surface:#0d1525;--surface-2:#111f35;--surface-3:#162040;
+  --border:rgba(255,255,255,.07);--bor-o:rgba(255,122,0,.22);
+  --orange:#FF7A00;--orange-2:#FFB347;
+  --text:#fff;--text-2:rgba(255,255,255,.6);--text-3:rgba(255,255,255,.28);
+  --red:#ef4444;--green:#22c55e;--yellow:#f59e0b;
+  --r:12px;--sidebar:244px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:inherit;outline:none}
+a{text-decoration:none;color:inherit}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,122,0,.25);border-radius:10px}
+
+/* ══════════════════════════════
+   LOGIN
+══════════════════════════════ */
+#loginScreen{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse at 15% 50%,rgba(255,122,0,.07) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 15%,rgba(255,122,0,.05) 0%,transparent 50%);
+}
+.lc{width:100%;max-width:400px;padding:1rem}
+.lc-card{
+  background:var(--surface);border:1px solid var(--bor-o);
+  border-radius:20px;padding:2.5rem 2.2rem;
+  box-shadow:0 40px 80px rgba(0,0,0,.55);
+}
+.lc-brand{display:flex;align-items:center;gap:.75rem;margin-bottom:2rem}
+.lc-brand-icon{
+  width:42px;height:42px;flex-shrink:0;border-radius:11px;
+  background:linear-gradient(135deg,var(--orange),var(--orange-2));
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+}
+.lc-brand-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700}
+.lc-brand-sub{font-size:.6rem;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase}
+.lc-h{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;margin-bottom:.2rem}
+.lc-sub{font-size:.78rem;color:var(--text-2);margin-bottom:1.8rem}
+.lc-lbl{display:block;font-size:.65rem;font-weight:700;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:.35rem}
+.lc-inp{
+  display:block;width:100%;padding:.72rem 1rem;margin-bottom:.9rem;
+  background:var(--surface-2);border:1px solid var(--border);
+  border-radius:9px;color:#fff;font-size:.87rem;
+  transition:border-color .2s;
+}
+.lc-inp:focus{border-color:var(--orange)}
+.lc-btn{
+  width:100%;padding:.85rem;margin-top:.3rem;
+  background:linear-gradient(135deg,var(--orange),var(--orange-2));
+  border-radius:10px;color:#fff;font-size:.87rem;font-weight:700;
+  letter-spacing:.05em;transition:all .3s;
+  box-shadow:0 8px 20px rgba(255,122,0,.3);
+}
+.lc-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 28px rgba(255,122,0,.45)}
+.lc-btn:disabled{opacity:.55;cursor:not-allowed}
+.lc-err{
+  margin-top:.8rem;padding:.6rem .9rem;
+  background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.22);
+  border-radius:8px;font-size:.76rem;color:#fca5a5;display:none;
+}
+
+/* ══════════════════════════════
+   LAYOUT
+══════════════════════════════ */
+#appScreen{display:none}
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sb{
+  width:var(--sidebar);flex-shrink:0;
+  background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:200;
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+.sb-logo{
+  padding:1.4rem 1.1rem;
+  display:flex;align-items:center;gap:.65rem;
+  border-bottom:1px solid var(--border);
+}
+.sb-logo-ico{
+  width:34px;height:34px;flex-shrink:0;border-radius:9px;
+  background:linear-gradient(135deg,var(--orange),var(--orange-2));
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+}
+.sb-logo-txt{font-size:.8rem;font-weight:700;line-height:1.2}
+.sb-logo-sub{font-size:.58rem;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em}
+.sb-nav{flex:1;padding:.8rem 0;overflow-y:auto}
+.sb-sec{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);padding:.45rem 1.1rem .2rem}
+.sb-item{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.62rem 1.1rem;font-size:.8rem;font-weight:500;color:var(--text-2);
+  cursor:pointer;border:none;background:transparent;width:100%;text-align:left;
+  transition:background .15s,color .15s;position:relative;
+}
+.sb-item:hover{background:rgba(255,255,255,.04);color:#fff}
+.sb-item.active{color:var(--orange);background:rgba(255,122,0,.06)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;background:linear-gradient(var(--orange),var(--orange-2));border-radius:0 3px 3px 0}
+.sb-ico{font-size:.95rem;width:18px;text-align:center;flex-shrink:0}
+.sb-foot{padding:.9rem 1.1rem;border-top:1px solid var(--border)}
+.sb-user{display:flex;align-items:center;gap:.65rem}
+.sb-av{
+  width:30px;height:30px;flex-shrink:0;border-radius:50%;
+  background:linear-gradient(135deg,var(--orange),var(--orange-2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:700;
+}
+.sb-email{font-size:.7rem;color:var(--text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-logout{background:none;border:none;color:var(--text-3);font-size:.85rem;cursor:pointer;transition:color .2s;padding:0}
+.sb-logout:hover{color:var(--red)}
+
+/* OVERLAY mobile */
+.sb-mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:199}
+.sb-mask.on{display:block}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{
+  height:60px;background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.8rem;position:sticky;top:0;z-index:100;
+}
+.tb-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700}
+.tb-right{display:flex;align-items:center;gap:.7rem}
+.ham{display:none;background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer}
+.pb{padding:1.8rem}
+
+/* ══════════════════════════════
+   PAGES
+══════════════════════════════ */
+.page{display:none}
+.page.on{display:block}
+
+/* ══════════════════════════════
+   STAT CARDS
+══════════════════════════════ */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.8rem}
+.sc{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.3rem 1.4rem;
+  position:relative;overflow:hidden;
+  transition:border-color .3s,transform .3s;
+}
+.sc:hover{border-color:var(--bor-o);transform:translateY(-2px)}
+.sc::after{
+  content:'';position:absolute;top:-50px;right:-50px;
+  width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,122,0,.07),transparent 70%);
+  pointer-events:none;
+}
+.sc-ico{font-size:1.5rem;margin-bottom:.75rem}
+.sc-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;line-height:1}
+.sc-lbl{font-size:.68rem;color:var(--text-2);margin-top:.25rem;text-transform:uppercase;letter-spacing:.08em}
+.sc-tag{display:inline-flex;align-items:center;gap:.2rem;font-size:.65rem;margin-top:.45rem;padding:.13rem .42rem;border-radius:20px}
+.sc-tag.up{background:rgba(34,197,94,.1);color:#86efac}
+.sc-tag.neutral{background:rgba(255,255,255,.05);color:var(--text-3)}
+
+/* ══════════════════════════════
+   TABLE
+══════════════════════════════ */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.7rem}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700}
+.srch-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}
+.srch-inp{
+  flex:1;min-width:180px;padding:.52rem .9rem;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;color:#fff;font-size:.8rem;
+  transition:border-color .2s;
+}
+.srch-inp:focus{border-color:var(--orange)}
+.flt{
+  padding:.52rem .85rem;background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;color:#fff;font-size:.8rem;cursor:pointer;
+}
+.flt option{background:#111f35}
+.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+thead th{
+  background:rgba(255,255,255,.025);padding:.7rem .9rem;
+  text-align:left;font-size:.64rem;font-weight:700;
+  color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody td{
+  padding:.8rem .9rem;border-bottom:1px solid rgba(255,255,255,.025);
+  font-size:.8rem;color:var(--text-2);vertical-align:middle;
+}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(255,255,255,.018)}
+.td-name{color:#fff;font-weight:500;max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bdg{display:inline-block;padding:.16rem .58rem;border-radius:20px;font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.bdg-ap{background:rgba(99,179,237,.1);color:#90cdf4}
+.bdg-ca{background:rgba(154,230,180,.1);color:#9ae6b4}
+.bdg-fi{background:rgba(246,173,85,.1);color:#f6ad55}
+.bdg-of{background:rgba(183,148,246,.1);color:#b794f4}
+.bdg-on{background:rgba(34,197,94,.1);color:#86efac}
+.bdg-vn{background:rgba(239,68,68,.1);color:#fca5a5}
+.bdg-off{background:rgba(255,255,255,.06);color:var(--text-3)}
+.ta{display:flex;gap:.35rem;align-items:center}
+.tb{
+  width:28px;height:28px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;cursor:pointer;transition:all .18s;
+  background:rgba(255,255,255,.04);color:var(--text-2);border:none;
+}
+.tb:hover{transform:scale(1.1)}
+.tb.ed:hover{background:rgba(255,122,0,.14);color:var(--orange)}
+.tb.dl:hover{background:rgba(239,68,68,.14);color:var(--red)}
+.tb.sl:hover{background:rgba(34,197,94,.14);color:var(--green)}
+.empty{text-align:center;padding:3.5rem 1.5rem;color:var(--text-3)}
+.empty-ico{font-size:2.5rem;margin-bottom:.7rem;opacity:.35}
+
+/* ══════════════════════════════
+   BUTTONS
+══════════════════════════════ */
+.btn-p{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.55rem 1.1rem;border-radius:9px;
+  background:linear-gradient(135deg,var(--orange),var(--orange-2));
+  color:#fff;font-size:.8rem;font-weight:700;
+  transition:all .3s;box-shadow:0 4px 14px rgba(255,122,0,.22);border:none;
+}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,122,0,.38)}
+.btn-s{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.55rem 1.1rem;border-radius:9px;
+  background:rgba(255,255,255,.06);border:1px solid var(--border);
+  color:var(--text-2);font-size:.8rem;font-weight:500;transition:all .2s;
+}
+.btn-s:hover{background:rgba(255,255,255,.1);color:#fff}
+.btn-d{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.55rem 1.1rem;border-radius:9px;
+  background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22);
+  color:#fca5a5;font-size:.8rem;font-weight:600;transition:all .2s;border-style:solid;
+}
+.btn-d:hover{background:rgba(239,68,68,.18)}
+
+/* ══════════════════════════════
+   FORM
+══════════════════════════════ */
+.form-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;max-width:720px}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
+.fg1{display:grid;grid-template-columns:1fr;gap:.9rem}
+.fg-span2{grid-column:span 2}
+.fg{display:flex;flex-direction:column;gap:.28rem}
+.fl{font-size:.64rem;font-weight:700;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase}
+.fi{
+  padding:.62rem .88rem;
+  background:var(--surface-2);border:1px solid var(--border);
+  border-radius:9px;color:#fff;font-size:.83rem;
+  transition:border-color .2s;
+}
+.fi:focus{border-color:var(--orange)}
+textarea.fi{resize:vertical;min-height:75px;line-height:1.55}
+select.fi{cursor:pointer}
+select.fi option{background:#111f35}
+.fsep{
+  font-size:.63rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--orange);
+  margin:1.1rem 0 .6rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.fsep::after{content:'';flex:1;height:1px;background:rgba(255,122,0,.14)}
+.tg-grp{display:flex;flex-wrap:wrap;gap:.38rem}
+.tg{
+  padding:.28rem .7rem;border-radius:20px;font-size:.7rem;font-weight:500;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  color:var(--text-2);cursor:pointer;transition:all .18s;
+}
+.tg.on,.tg:hover{background:rgba(255,122,0,.1);border-color:var(--orange);color:var(--orange)}
+
+/* ── PHOTO ZONE ── */
+.pz{
+  border:2px dashed rgba(255,122,0,.22);border-radius:11px;
+  padding:1.4rem;text-align:center;cursor:pointer;
+  transition:border-color .2s,background .2s;position:relative;
+}
+.pz:hover,.pz.drag{border-color:var(--orange);background:rgba(255,122,0,.03)}
+.pz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.pz-ico{font-size:1.8rem;margin-bottom:.4rem}
+.pz-txt{font-size:.78rem;color:var(--text-2)}
+.pz-hint{font-size:.68rem;color:var(--text-3);margin-top:.15rem}
+.prev-grid{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.7rem}
+.pv{position:relative;width:76px;height:58px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.pv img{width:100%;height:100%;object-fit:cover}
+.pv-del{
+  position:absolute;top:2px;right:2px;width:17px;height:17px;
+  border-radius:50%;background:rgba(0,0,0,.72);border:none;
+  color:#fff;font-size:.5rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.upd{
+  display:none;align-items:center;gap:.5rem;
+  margin-top:.5rem;padding:.55rem .85rem;
+  background:rgba(255,122,0,.07);border:1px solid rgba(255,122,0,.18);
+  border-radius:8px;font-size:.74rem;color:var(--orange-2);
+}
+.sp{
+  width:14px;height:14px;flex-shrink:0;border-radius:50%;
+  border:2px solid rgba(255,122,0,.2);border-top-color:var(--orange);
+  animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FORM FOOTER ── */
+.form-foot{display:flex;gap:.7rem;justify-content:flex-end;margin-top:1.4rem;flex-wrap:wrap}
+
+/* ══════════════════════════════
+   CONFIRM
+══════════════════════════════ */
+.ov{
+  position:fixed;inset:0;z-index:800;
+  background:rgba(5,11,24,.88);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:1rem;
+}
+.ov.on{display:flex}
+.dlg{
+  background:var(--surface);border:1px solid rgba(239,68,68,.28);
+  border-radius:15px;padding:2rem 1.8rem;max-width:360px;width:100%;
+  box-shadow:0 30px 60px rgba(0,0,0,.5);
+  animation:popIn .3s cubic-bezier(.16,1,.3,1);
+}
+.dlg-ok{background:var(--surface);border:1px solid var(--bor-o)}
+@keyframes popIn{from{opacity:0;transform:scale(.94) translateY(12px)}to{opacity:1;transform:none}}
+.dlg-ico{font-size:2.4rem;text-align:center;margin-bottom:.8rem}
+.dlg-h{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;text-align:center;margin-bottom:.4rem}
+.dlg-p{font-size:.8rem;color:var(--text-2);text-align:center;line-height:1.65;margin-bottom:1.4rem}
+.dlg-acts{display:flex;gap:.6rem}
+
+/* ══════════════════════════════
+   TOAST
+══════════════════════════════ */
+#tc{position:fixed;bottom:1.4rem;right:1.4rem;z-index:9999;display:flex;flex-direction:column;gap:.45rem;pointer-events:none}
+.toast{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.7rem 1rem;border-radius:10px;
+  font-size:.78rem;font-weight:500;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  animation:toastIn .3s cubic-bezier(.16,1,.3,1);
+  max-width:300px;pointer-events:auto;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.toast.ok{background:#14532d;border:1px solid #166534;color:#86efac}
+.toast.err{background:#450a0a;border:1px solid #7f1d1d;color:#fca5a5}
+.toast.inf{background:#172554;border:1px solid #1e40af;color:#93c5fd}
+.ld{display:flex;align-items:center;gap:.6rem;padding:3.5rem;color:var(--text-3);font-size:.82rem}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media(max-width:1024px){.sg{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .ham{display:flex}
+  .sg{grid-template-columns:1fr 1fr}
+  .pb{padding:1.1rem}
+  .fg2,.fg3{grid-template-columns:1fr}
+  .fg-span2{grid-column:span 1}
+  thead th:nth-child(3),thead th:nth-child(4),
+  tbody td:nth-child(3),tbody td:nth-child(4){display:none}
+}
+@media(max-width:480px){.sg{grid-template-columns:1fr 1fr}.sc-val{font-size:1.6rem}}
+</style>
+</head>
+<body>
+
+<div id="tc"></div>
+
+<!-- ══ LOGIN ══ -->
+<div id="loginScreen">
+  <div class="lc">
+    <div class="lc-card">
+      <div class="lc-brand">
+        <div class="lc-brand-icon">🏠</div>
+        <div>
+          <div class="lc-brand-name">Sueños Inmobiliarios</div>
+          <div class="lc-brand-sub">Panel Admin</div>
+        </div>
+      </div>
+      <h1 class="lc-h">Bienvenido</h1>
+      <p class="lc-sub">Accede con tus credenciales de administrador</p>
+      <label class="lc-lbl" for="lEmail">Correo electrónico</label>
+      <input class="lc-inp" id="lEmail" type="email" placeholder="admin@ejemplo.com" autocomplete="email">
+      <label class="lc-lbl" for="lPass">Contraseña</label>
+      <input class="lc-inp" id="lPass" type="password" placeholder="••••••••" autocomplete="current-password">
+      <button class="lc-btn" id="lBtn" onclick="doLogin()">Ingresar</button>
+      <div class="lc-err" id="lErr"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="appScreen">
+  <div class="sb-mask" id="sbMask" onclick="closeSb()"></div>
+  <div class="app">
+    <aside class="sb" id="sb">
+      <div class="sb-logo">
+        <div class="sb-logo-ico">🏠</div>
+        <div><div class="sb-logo-txt">Sueños Inmo.</div><div class="sb-logo-sub">Admin Panel</div></div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-sec">Principal</div>
+        <button class="sb-item active" data-pg="dashboard" onclick="go('dashboard',this)"><span class="sb-ico">📊</span>Dashboard</button>
+        <button class="sb-item" data-pg="props" onclick="go('props',this)"><span class="sb-ico">🏠</span>Propiedades</button>
+        <div class="sb-sec">Gestión</div>
+        <button class="sb-item" data-pg="nueva" onclick="go('nueva',this)"><span class="sb-ico">➕</span>Nueva propiedad</button>
+        <button class="sb-item" data-pg="vendidas" onclick="go('vendidas',this)"><span class="sb-ico">✅</span>Vendidas</button>
+        <div class="sb-sec">Accesos</div>
+        <a class="sb-item" href="index.html" target="_blank"><span class="sb-ico">🌐</span>Ver landing</a>
+      </nav>
+      <div class="sb-foot">
+        <div class="sb-user">
+          <div class="sb-av" id="sbAv">A</div>
+          <div class="sb-email" id="sbEmail">–</div>
+          <button class="sb-logout" onclick="doLogout()" title="Salir">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:.7rem">
+          <button class="ham" onclick="toggleSb()">☰</button>
+          <div class="tb-title" id="tbTitle">Dashboard</div>
+        </div>
+        <div class="tb-right">
+          <button class="btn-p" onclick="go('nueva',document.querySelector('[data-pg=nueva]'))">＋ Nueva propiedad</button>
+        </div>
+      </div>
+
+      <div class="pb">
+
+        <!-- ── DASHBOARD ── -->
+        <div class="page on" id="pg-dashboard">
+          <div class="sg" id="statsGrid">
+            <div class="sc"><div class="sc-ico">🏠</div><div class="sc-val" id="stAct">–</div><div class="sc-lbl">Propiedades activas</div><div class="sc-tag neutral">En catálogo</div></div>
+            <div class="sc"><div class="sc-ico">✅</div><div class="sc-val" id="stVnd">–</div><div class="sc-lbl">Vendidas</div><div class="sc-tag up">Cerradas</div></div>
+            <div class="sc"><div class="sc-ico">🏙️</div><div class="sc-val" id="stCiu">–</div><div class="sc-lbl">Ciudades</div><div class="sc-tag neutral">Cobertura</div></div>
+            <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="stAvg">–</div><div class="sc-lbl">Precio promedio</div><div class="sc-tag neutral">COP M</div></div>
+          </div>
+          <div class="sec-hd"><div class="sec-title">Recientes</div></div>
+          <div id="dashRecent"><div class="ld"><div class="sp"></div>Cargando...</div></div>
+        </div>
+
+        <!-- ── PROPIEDADES ── -->
+        <div class="page" id="pg-props">
+          <div class="sec-hd">
+            <div class="sec-title">Todas las propiedades</div>
+            <button class="btn-p" onclick="go('nueva',document.querySelector('[data-pg=nueva]'))">＋ Agregar</button>
+          </div>
+          <div class="srch-row">
+            <input class="srch-inp" id="srchQ" type="text" placeholder="🔍  Buscar nombre, ciudad..." oninput="renderTbl()">
+            <select class="flt" id="fltCiu" onchange="renderTbl()"><option value="">Todas ciudades</option><option>Pereira</option><option>Dosquebradas</option><option>Santa Rosa de Cabal</option></select>
+            <select class="flt" id="fltTipo" onchange="renderTbl()"><option value="">Todos tipos</option><option>Apartamento</option><option>Casa</option><option>Finca</option><option>Oficina</option><option>Local</option></select>
+            <select class="flt" id="fltEst" onchange="renderTbl()"><option value="">Todos estados</option><option value="activo">Activos</option><option value="vendido">Vendidos</option></select>
+          </div>
+          <div class="tbl-wrap">
+            <table><thead><tr><th>Propiedad</th><th>Ciudad</th><th>Precio</th><th>Tipo</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody id="tblBody"><tr><td colspan="6"><div class="ld"><div class="sp"></div>Cargando...</div></td></tr></tbody></table>
+          </div>
+        </div>
+
+        <!-- ── NUEVA / EDITAR ── -->
+        <div class="page" id="pg-nueva">
+          <div class="sec-hd"><div class="sec-title" id="formTitle">Nueva propiedad</div></div>
+          <div class="form-wrap" id="formWrap"><!-- JS renders --></div>
+        </div>
+
+        <!-- ── VENDIDAS ── -->
+        <div class="page" id="pg-vendidas">
+          <div class="sec-hd"><div class="sec-title">Propiedades vendidas</div></div>
+          <div class="tbl-wrap">
+            <table><thead><tr><th>Propiedad</th><th>Ciudad</th><th>Precio</th><th>Tipo</th><th>Acciones</th></tr></thead>
+            <tbody id="vndBody"><tr><td colspan="5"><div class="ld"><div class="sp"></div>Cargando...</div></td></tr></tbody></table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══ CONFIRM DIALOG ══ -->
+<div class="ov" id="cfOv">
+  <div class="dlg" id="cfBox">
+    <div class="dlg-ico" id="cfIco">⚠️</div>
+    <div class="dlg-h" id="cfH">¿Estás seguro?</div>
+    <div class="dlg-p" id="cfP">Esta acción no se puede deshacer.</div>
+    <div class="dlg-acts">
+      <button class="btn-s" style="flex:1" onclick="closeCf()">Cancelar</button>
+      <button id="cfOk" class="btn-d" style="flex:1">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// SUPABASE CONFIG
+// ══════════════════════════════════════════
+const SURL = 'https://trbamfvvpdmmdxpjiiqx.supabase.co';
+const SKEY = 'sb_publishable_RyY-UE50Ej5P4wGKtdAc7A_HdBOGkLo';
+const sb = supabase.createClient(SURL, SKEY);
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let ALL = [];
+let editId = null;
+let pendingFiles = [];
+let existingUrls = [];
+let cfCb = null;
+
+const PAGE_TITLES = {dashboard:'Dashboard',props:'Propiedades',nueva:'Nueva propiedad',vendidas:'Vendidas'};
+const TIPO_BDG = {Apartamento:'ap',Casa:'ca','Casa unifamiliar':'ca','Casa independiente':'ca',Finca:'fi',Oficina:'of',Local:'of',Lote:'of'};
+const TIPO_EMJ = {Apartamento:'🏢',Casa:'🏡','Casa unifamiliar':'🏡','Casa independiente':'🏡',Finca:'🌿',Oficina:'🏢',Local:'🏢',Lote:'🌾'};
+const FEATS = ['🚗 Garaje','🌿 Jardín / Patio','🔐 Conjunto cerrado','🏊 Piscina','🌇 Vista panorámica','🛗 Ascensor','🏋️ Gimnasio','🔆 Terraza / Balcón','🐾 Acepta mascotas','⚡ Planta eléctrica','🌾 Cultivos','🌊 Acceso a agua'];
+
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+(async function(){
+  const {data:{session}} = await sb.auth.getSession();
+  if(session) showApp(session.user);
+  sb.auth.onAuthStateChange((_,s)=>{ s ? showApp(s.user) : showLogin(); });
+})();
+
+// ══════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════
+async function doLogin(){
+  const email = document.getElementById('lEmail').value.trim();
+  const pass  = document.getElementById('lPass').value;
+  const btn   = document.getElementById('lBtn');
+  const err   = document.getElementById('lErr');
+  if(!email||!pass){showErr('Completa todos los campos');return;}
+  btn.disabled=true; btn.textContent='Ingresando...';
+  err.style.display='none';
+  const {error} = await sb.auth.signInWithPassword({email,password:pass});
+  btn.disabled=false; btn.textContent='Ingresar';
+  if(error) showErr(error.message.includes('Invalid')?'Correo o contraseña incorrectos':error.message);
+}
+function showErr(m){const e=document.getElementById('lErr');e.textContent=m;e.style.display='block';}
+document.getElementById('lPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+async function doLogout(){ await sb.auth.signOut(); }
+function showLogin(){ document.getElementById('loginScreen').style.display='flex'; document.getElementById('appScreen').style.display='none'; }
+function showApp(user){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appScreen').style.display='block';
+  document.getElementById('sbEmail').textContent=user.email||'';
+  document.getElementById('sbAv').textContent=(user.email||'A').charAt(0).toUpperCase();
+  loadAll();
+}
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+function go(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.sb-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('pg-'+name).classList.add('on');
+  if(el) el.classList.add('active');
+  document.getElementById('tbTitle').textContent=PAGE_TITLES[name]||name;
+  closeSb();
+  if(name==='dashboard') renderDash();
+  if(name==='props') renderTbl();
+  if(name==='vendidas') renderVnd();
+  if(name==='nueva'){ editId=null; document.getElementById('formTitle').textContent='Nueva propiedad'; buildForm(null); }
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════════
+// SIDEBAR MOBILE
+// ══════════════════════════════════════════
+function toggleSb(){ document.getElementById('sb').classList.toggle('open'); document.getElementById('sbMask').classList.toggle('on'); }
+function closeSb(){ document.getElementById('sb').classList.remove('open'); document.getElementById('sbMask').classList.remove('on'); }
+
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+async function loadAll(){
+  const {data,error} = await sb.from('propiedades').select('*').order('created_at',{ascending:false});
+  if(error){toast('err','Error: '+error.message);return;}
+  ALL = data||[];
+  renderDash(); renderTbl();
+}
+
+// ══════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════
+function renderDash(){
+  const act = ALL.filter(p=>p.activo&&!p.vendido);
+  const vnd = ALL.filter(p=>p.vendido);
+  const ciu = [...new Set(ALL.map(p=>p.ciudad).filter(Boolean))];
+  const pp  = act.filter(p=>p.precio>0).map(p=>p.precio);
+  const avg = pp.length ? Math.round(pp.reduce((a,b)=>a+b,0)/pp.length/1000000) : 0;
+  document.getElementById('stAct').textContent=act.length;
+  document.getElementById('stVnd').textContent=vnd.length;
+  document.getElementById('stCiu').textContent=ciu.length;
+  document.getElementById('stAvg').textContent=avg>0?avg+'M':'–';
+  const rec=ALL.slice(0,6);
+  document.getElementById('dashRecent').innerHTML=rec.length
+    ?'<div class="tbl-wrap">'+tblHtml(rec,false)+'</div>'
+    :'<div class="empty"><div class="empty-ico">🏠</div>Sin propiedades aún</div>';
+}
+
+// ══════════════════════════════════════════
+// TABLE
+// ══════════════════════════════════════════
+function renderTbl(){
+  const q  =(document.getElementById('srchQ')?.value||'').toLowerCase();
+  const ciu= document.getElementById('fltCiu')?.value||'';
+  const tip= document.getElementById('fltTipo')?.value||'';
+  const est= document.getElementById('fltEst')?.value||'';
+  const f=ALL.filter(p=>{
+    if(!p.activo&&est!=='vendido') return false;
+    const mQ=!q||(p.titulo||'').toLowerCase().includes(q)||(p.ciudad||'').toLowerCase().includes(q);
+    const mC=!ciu||p.ciudad===ciu;
+    const mT=!tip||p.tipo===tip;
+    const mE=!est||(est==='activo'&&p.activo&&!p.vendido)||(est==='vendido'&&p.vendido);
+    return mQ&&mC&&mT&&mE;
+  });
+  document.getElementById('tblBody').innerHTML=f.length
+    ?rows(f,true)
+    :'<tr><td colspan="6"><div class="empty"><div class="empty-ico">🔍</div>Sin resultados</div></td></tr>';
+}
+function renderVnd(){
+  const f=ALL.filter(p=>p.vendido);
+  document.getElementById('vndBody').innerHTML=f.length
+    ?rowsV(f)
+    :'<tr><td colspan="5"><div class="empty"><div class="empty-ico">✅</div>Sin vendidas aún</div></td></tr>';
+}
+function tblHtml(arr,actions){
+  return '<table><thead><tr><th>Propiedad</th><th>Ciudad</th><th>Precio</th><th>Tipo</th>'+(actions?'<th>Estado</th><th>Acciones</th>':'')+'</tr></thead><tbody>'+rows(arr,actions)+'</tbody></table>';
+}
+function fmtP(v){ return v?'$'+Number(v).toLocaleString('es-CO'):'–'; }
+function tipBdg(t){ const c=TIPO_BDG[t]||'ap'; return '<span class="bdg bdg-'+c+'">'+(t||'–')+'</span>'; }
+function estBdg(p){ return p.vendido?'<span class="bdg bdg-vn">Vendido</span>':p.activo?'<span class="bdg bdg-on">Activo</span>':'<span class="bdg bdg-off">Inactivo</span>'; }
+function esc(s){ return (s||'').replace(/'/g,"\\'"); }
+function rows(arr,act){
+  return arr.map(p=>`<tr>
+    <td><span class="td-name">${p.titulo||'Sin título'}</span></td>
+    <td>${p.ciudad||'–'}</td>
+    <td>${fmtP(p.precio)}</td>
+    <td>${tipBdg(p.tipo)}</td>
+    ${act?`<td>${estBdg(p)}</td><td><div class="ta">
+      <button class="tb ed" onclick="editProp(${p.id})" title="Editar">✏️</button>
+      ${!p.vendido?`<button class="tb sl" onclick="markSold(${p.id},'${esc(p.titulo)}',false)" title="Marcar vendida">✅</button>`:`<button class="tb" onclick="markSold(${p.id},'${esc(p.titulo)}',true)" title="Reactivar">🔄</button>`}
+      <button class="tb dl" onclick="delProp(${p.id},'${esc(p.titulo)}')" title="Eliminar">🗑️</button>
+    </div></td>`:''}
+  </tr>`).join('');
+}
+function rowsV(arr){
+  return arr.map(p=>`<tr>
+    <td><span class="td-name">${p.titulo||'Sin título'}</span></td>
+    <td>${p.ciudad||'–'}</td>
+    <td>${fmtP(p.precio)}</td>
+    <td>${tipBdg(p.tipo)}</td>
+    <td><div class="ta">
+      <button class="tb" onclick="markSold(${p.id},'${esc(p.titulo)}',true)" title="Reactivar">🔄</button>
+      <button class="tb dl" onclick="delProp(${p.id},'${esc(p.titulo)}')">🗑️</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+// ══════════════════════════════════════════
+// FORM
+// ══════════════════════════════════════════
+function buildForm(prop){
+  pendingFiles=[]; existingUrls=[];
+  if(prop&&prop.imagenes){try{existingUrls=JSON.parse(prop.imagenes)||[];}catch(e){}}
+  const feats=prop&&prop.caracteristicas?JSON.parse(prop.caracteristicas||'[]'):[];
+  const v=(id)=>prop?prop[id]||'':'';
+  const sel=(id,val)=>v(id)===val?' selected':'';
+  document.getElementById('formWrap').innerHTML=`
+    <div class="fsep">📍 Ubicación</div>
+    <div class="fg2" style="margin-bottom:.9rem">
+      <div class="fg fg-span2"><label class="fl">Título *</label><input class="fi" id="fT" value="${esc(v('titulo'))}" placeholder="Ej: Apartamento Pinares"></div>
+      <div class="fg"><label class="fl">Ciudad *</label>
+        <select class="fi" id="fCiu">${['Pereira','Dosquebradas','Santa Rosa de Cabal','Otra'].map(c=>`<option${sel('ciudad',c)}>${c}</option>`).join('')}</select></div>
+      <div class="fg"><label class="fl">Barrio / Sector</label><input class="fi" id="fBa" value="${esc(v('barrio'))}" placeholder="Ej: Pinares, Cuba..."></div>
+    </div>
+
+    <div class="fsep">🏠 Detalles</div>
+    <div class="fg2" style="margin-bottom:.9rem">
+      <div class="fg"><label class="fl">Tipo *</label>
+        <select class="fi" id="fTi">${['Apartamento','Casa','Casa unifamiliar','Casa independiente','Finca','Oficina','Local','Lote'].map(t=>`<option${sel('tipo',t)}>${t}</option>`).join('')}</select></div>
+      <div class="fg"><label class="fl">Estrato</label>
+        <select class="fi" id="fEs"><option value="">–</option>${['Estrato 1','Estrato 2','Estrato 3','Estrato 4','Estrato 5','Estrato 6','Rural','Comercial'].map(e=>`<option${sel('estrato',e)}>${e}</option>`).join('')}</select></div>
+    </div>
+    <div class="fg3" style="margin-bottom:.9rem">
+      <div class="fg"><label class="fl">Habitaciones</label><input class="fi" id="fHb" type="number" min="0" value="${v('habitaciones')||0}" placeholder="3"></div>
+      <div class="fg"><label class="fl">Baños</label><input class="fi" id="fBn" type="number" min="0" value="${v('banos')||1}" placeholder="2"></div>
+      <div class="fg"><label class="fl">Área (m²)</label><input class="fi" id="fAr" type="number" min="0" value="${v('area')}" placeholder="85"></div>
+    </div>
+    <div class="fg2" style="margin-bottom:.9rem">
+      <div class="fg"><label class="fl">Antigüedad</label>
+        <select class="fi" id="fAn"><option value="">–</option>${['Nuevo / En obra','Menos de 5 años','5 a 10 años','10 a 20 años','Más de 20 años'].map(a=>`<option${sel('antiguedad',a)}>${a}</option>`).join('')}</select></div>
+      <div class="fg"><label class="fl">Parqueadero</label>
+        <select class="fi" id="fPq"><option value="">–</option>${['Sin parqueadero','1 parqueadero','2 parqueaderos','3+','Amplio'].map(a=>`<option${sel('parqueadero',a)}>${a}</option>`).join('')}</select></div>
+      <div class="fg"><label class="fl">Piso</label><input class="fi" id="fPs" value="${esc(v('piso'))}" placeholder="Piso 8"></div>
+    </div>
+
+    <div class="fsep">💰 Precio</div>
+    <div class="fg2" style="margin-bottom:.9rem">
+      <div class="fg"><label class="fl">Precio COP *</label><input class="fi" id="fPr" type="number" min="0" value="${v('precio')}" placeholder="380000000"></div>
+      <div class="fg"><label class="fl">Negociación</label>
+        <select class="fi" id="fNg"><option value="">–</option>${['Precio fijo','Precio negociable','Acepta permuta'].map(n=>`<option${sel('negociacion',n)}>${n}</option>`).join('')}</select></div>
+    </div>
+
+    <div class="fsep">✦ Características</div>
+    <div class="tg-grp" id="featGrp" style="margin-bottom:.9rem">
+      ${FEATS.map(f=>`<button class="tg${feats.includes(f)?' on':''}" onclick="this.classList.toggle('on')">${f}</button>`).join('')}
+    </div>
+
+    <div class="fsep">📝 Descripción</div>
+    <div class="fg1" style="margin-bottom:.9rem">
+      <div class="fg"><textarea class="fi" id="fDs" rows="3" placeholder="Estado, remodelaciones, detalles especiales...">${v('descripcion')}</textarea></div>
+    </div>
+
+    <div class="fsep">📸 Fotos</div>
+    ${existingUrls.length?`<div style="margin-bottom:.7rem"><div class="fl" style="margin-bottom:.35rem">Fotos actuales</div><div class="prev-grid" id="exPrev">${existingUrls.map((u,i)=>`<div class="pv" id="ep${i}"><img src="${u}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22/>'"><button class="pv-del" onclick="rmEx(${i})">✕</button></div>`).join('')}</div></div>`:''}
+    <div class="pz" id="dz">
+      <input type="file" accept="image/*" multiple onchange="handleF(this.files)">
+      <div class="pz-ico">📷</div>
+      <div class="pz-txt">Arrastra o toca para subir fotos</div>
+      <div class="pz-hint">JPG · PNG · WEBP · Máx 10 fotos · 5MB c/u</div>
+    </div>
+    <div class="prev-grid" id="newPrev"></div>
+    <div class="upd" id="upd"><div class="sp"></div><span id="updTxt">Subiendo...</span></div>
+
+    <div class="fsep">⚙️ Opciones</div>
+    <div class="fg2" style="margin-bottom:.5rem">
+      <div class="fg" style="flex-direction:row;align-items:center;gap:.6rem">
+        <input type="checkbox" id="fAc" ${prop?(prop.activo!==false?'checked':''):'checked'} style="accent-color:var(--orange);width:15px;height:15px">
+        <label for="fAc" class="fl" style="margin:0;cursor:pointer">Propiedad activa en landing</label>
+      </div>
+      <div class="fg" style="flex-direction:row;align-items:center;gap:.6rem">
+        <input type="checkbox" id="fPe" ${prop&&prop.permuta?'checked':''} style="accent-color:var(--orange);width:15px;height:15px">
+        <label for="fPe" class="fl" style="margin:0;cursor:pointer">Acepta permuta</label>
+      </div>
+    </div>
+
+    <div class="form-foot">
+      <button class="btn-s" onclick="cancelF()">Cancelar</button>
+      <button class="btn-p" id="savBtn" onclick="saveP()">
+        ${prop?'💾 Guardar cambios':'➕ Crear propiedad'}
+      </button>
+    </div>
+  `;
+  // drag & drop
+  const dz=document.getElementById('dz');
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleF(e.dataTransfer.files)});
+}
+
+function handleF(files){
+  const arr=[...files].slice(0,10-pendingFiles.length);
+  arr.forEach(f=>{
+    pendingFiles.push(f);
+    const idx=pendingFiles.length-1;
+    const url=URL.createObjectURL(f);
+    const d=document.createElement('div');
+    d.className='pv';d.id='pf'+idx;
+    d.innerHTML='<img src="'+url+'"><button class="pv-del" onclick="rmPf('+idx+')">✕</button>';
+    document.getElementById('newPrev').appendChild(d);
+  });
+}
+function rmPf(i){ pendingFiles[i]=null; const e=document.getElementById('pf'+i); if(e)e.remove(); }
+function rmEx(i){ existingUrls[i]=null; const e=document.getElementById('ep'+i); if(e)e.remove(); }
+function cancelF(){ editId=null; go('props',document.querySelector('[data-pg=props]')); }
+
+// ══════════════════════════════════════════
+// SAVE
+// ══════════════════════════════════════════
+async function saveP(){
+  const titulo = document.getElementById('fT').value.trim();
+  const ciudad = document.getElementById('fCiu').value;
+  if(!titulo){toast('err','El título es obligatorio');return;}
+
+  const btn=document.getElementById('savBtn');
+  btn.disabled=true; btn.textContent='Guardando...';
+
+  const feats=[...document.querySelectorAll('#featGrp .tg.on')].map(b=>b.textContent.trim());
+  const updEl=document.getElementById('upd');
+  const updTxt=document.getElementById('updTxt');
+  let urls=existingUrls.filter(Boolean);
+  const toUp=pendingFiles.filter(Boolean);
+
+  if(toUp.length){
+    updEl.style.display='flex';
+    for(let i=0;i<toUp.length;i++){
+      updTxt.textContent='Subiendo foto '+(i+1)+' de '+toUp.length+'...';
+      const f=toUp[i];
+      const ext=f.name.split('.').pop().toLowerCase()||'jpg';
+      const path='propiedades/'+Date.now()+'_'+Math.random().toString(36).slice(2)+'.'+ext;
+      const {error:ue}=await sb.storage.from('propiedades-fotos').upload(path,f,{cacheControl:'3600',upsert:false});
+      if(ue){toast('err','Error subiendo foto: '+ue.message);updEl.style.display='none';btn.disabled=false;btn.textContent=editId?'💾 Guardar cambios':'➕ Crear propiedad';return;}
+      const {data:pd}=sb.storage.from('propiedades-fotos').getPublicUrl(path);
+      urls.push(pd.publicUrl);
+    }
+    updEl.style.display='none';
+  }
+
+  const payload={
+    titulo,
+    ciudad,
+    barrio:         document.getElementById('fBa').value.trim()||null,
+    tipo:           document.getElementById('fTi').value,
+    estrato:        document.getElementById('fEs').value||null,
+    habitaciones:   parseInt(document.getElementById('fHb').value)||0,
+    banos:          parseInt(document.getElementById('fBn').value)||1,
+    area:           parseInt(document.getElementById('fAr').value)||null,
+    antiguedad:     document.getElementById('fAn').value||null,
+    parqueadero:    document.getElementById('fPq').value||null,
+    piso:           document.getElementById('fPs').value.trim()||null,
+    precio:         parseFloat(document.getElementById('fPr').value)||null,
+    negociacion:    document.getElementById('fNg').value||null,
+    descripcion:    document.getElementById('fDs').value.trim()||null,
+    caracteristicas:JSON.stringify(feats),
+    imagen:         urls[0]||null,
+    imagenes:       JSON.stringify(urls),
+    activo:         document.getElementById('fAc').checked,
+    permuta:        document.getElementById('fPe').checked,
+  };
+
+  const {error}=editId
+    ? await sb.from('propiedades').update(payload).eq('id',editId)
+    : await sb.from('propiedades').insert([payload]);
+
+  btn.disabled=false;
+  btn.textContent=editId?'💾 Guardar cambios':'➕ Crear propiedad';
+
+  if(error){toast('err','Error: '+error.message);return;}
+  toast('ok',editId?'✓ Propiedad actualizada':'✓ Propiedad creada');
+  editId=null; pendingFiles=[]; existingUrls=[];
+  await loadAll();
+  go('props',document.querySelector('[data-pg=props]'));
+}
+
+// ══════════════════════════════════════════
+// EDIT
+// ══════════════════════════════════════════
+function editProp(id){
+  const p=ALL.find(x=>x.id===id);
+  if(!p)return;
+  editId=id;
+  document.getElementById('formTitle').textContent='Editar propiedad';
+  buildForm(p);
+  go('nueva',document.querySelector('[data-pg=nueva]'));
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════════
+// DELETE
+// ══════════════════════════════════════════
+function delProp(id,name){
+  showCf('🗑️','¿Eliminar propiedad?','"'+name+'" se eliminará permanentemente.',
+    async()=>{ const {error}=await sb.from('propiedades').delete().eq('id',id); if(error){toast('err',error.message);return;} toast('ok','✓ Eliminada'); await loadAll(); renderTbl(); },'btn-d','Eliminar');
+}
+
+// ══════════════════════════════════════════
+// MARK SOLD
+// ══════════════════════════════════════════
+function markSold(id,name,reactivate){
+  if(reactivate){
+    showCf('🔄','¿Reactivar propiedad?','"'+name+'" volverá al catálogo activo.',
+      async()=>{ const {error}=await sb.from('propiedades').update({vendido:false,activo:true}).eq('id',id); if(error){toast('err',error.message);return;} toast('ok','✓ Reactivada'); await loadAll(); renderTbl(); renderVnd(); },'btn-p','Reactivar');
+  } else {
+    showCf('✅','¿Marcar como vendida?','"'+name+'" pasará al archivo de vendidas.',
+      async()=>{ const {error}=await sb.from('propiedades').update({vendido:true,activo:false}).eq('id',id); if(error){toast('err',error.message);return;} toast('ok','✓ Marcada como vendida'); await loadAll(); renderTbl(); renderVnd(); },'btn-p','Confirmar');
+  }
+}
+
+// ══════════════════════════════════════════
+// CONFIRM
+// ══════════════════════════════════════════
+function showCf(ico,h,p,cb,btnCls,btnTxt){
+  document.getElementById('cfIco').textContent=ico;
+  document.getElementById('cfH').textContent=h;
+  document.getElementById('cfP').textContent=p;
+  const btn=document.getElementById('cfOk');
+  btn.className=btnCls;btn.textContent=btnTxt;
+  cfCb=cb;
+  document.getElementById('cfOv').classList.add('on');
+}
+function closeCf(){ document.getElementById('cfOv').classList.remove('on'); cfCb=null; }
+document.getElementById('cfOk').addEventListener('click',()=>{ closeCf(); if(cfCb)cfCb(); });
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function toast(type,msg){
+  const c=document.getElementById('tc');
+  const d=document.createElement('div');
+  d.className='toast '+type; d.textContent=msg;
+  c.appendChild(d);
+  setTimeout(()=>d.remove(),3500);
+}
+</script>
+</body>
+</html>
