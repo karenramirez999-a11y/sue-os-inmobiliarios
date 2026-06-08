@@ -1071,6 +1071,8 @@ nav.open .btn-nav{background:linear-gradient(135deg,#FF7A00,#FFB347)!important;c
 }
 
 </style>
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -1855,68 +1857,20 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 });
 
 /* ── DATA ── */
-const PROPS=[
-  {id:1,name:'Apto Pinares',tipo:'Apartamento',loc:'Pinares, Pereira',ciudad:'Pereira',price:'$380.000.000',beds:3,baths:2,area:85,perm:false,emoji:'🏢',bg:'ap',
-   estrato:'Estrato 4',antiguedad:'5 años',parq:'1 parqueadero',piso:'Piso 8',
-   desc:'Hermoso apartamento en el exclusivo sector de Pinares, con acabados premium, cocina integral y amplia zona social. Excelente iluminación natural y vistas panorámicas de la ciudad.',
-   feats:['🚗 Garaje','🔐 Conjunto cerrado','🛗 Ascensor','🌇 Vista panorámica','🏋️ Gimnasio','🏊 Piscina'],
-   gallery:['ap','ca','of','ap','ca']},
-  {id:2,name:'Casa El Poblado',tipo:'Casa',loc:'El Poblado, Pereira',ciudad:'Pereira',price:'$650.000.000',beds:4,baths:3,area:180,perm:true,emoji:'🏡',bg:'ca',
-   estrato:'Estrato 5',antiguedad:'8 años',parq:'2 parqueaderos',piso:'Casa independiente',
-   desc:'Amplia casa en conjunto residencial cerrado de El Poblado. Diseño moderno con jardín privado, estudio, sala-comedor doble y cuarto de servicio. Ideal para familia.',
-   feats:['🚗 Garaje doble','🌿 Jardín privado','🔐 Conjunto cerrado','🔆 Terraza','🐾 Acepta mascotas','⚡ Planta eléctrica'],
-   gallery:['ca','ap','of','ca','ap']},
-  {id:3,name:'Apto Dosquebradas',tipo:'Apartamento',loc:'Centro, Dosquebradas',ciudad:'Dosquebradas',price:'$220.000.000',beds:2,baths:1,area:55,perm:false,emoji:'🏗️',bg:'ap',
-   estrato:'Estrato 3',antiguedad:'3 años',parq:'1 parqueadero',piso:'Piso 5',
-   desc:'Apartamento moderno en el centro de Dosquebradas, cerca de centros comerciales y vías principales. Cocina americana, balcón y cuarto útil.',
-   feats:['🚗 Parqueadero','🛗 Ascensor','🔐 Portería 24h','🔆 Balcón'],
-   gallery:['ap','of','ca','ap','of']},
-  {id:4,name:'Casa Cerritos',tipo:'Casa',loc:'Cerritos, Pereira',ciudad:'Pereira',price:'$890.000.000',beds:5,baths:4,area:280,perm:true,emoji:'🌿',bg:'ca',
-   estrato:'Estrato 6',antiguedad:'10 años',parq:'3 parqueaderos',piso:'Casa independiente',
-   desc:'Lujosa casa campestre en Cerritos con acabados de primera, piscina privada, BBQ, estudio y amplio jardín. Zona de alta valorización ideal para vivir o invertir.',
-   feats:['🚗 Triple garaje','🏊 Piscina privada','🌿 Jardín amplio','🔆 Terraza BBQ','🌇 Vista panorámica','⚡ Planta eléctrica'],
-   gallery:['ca','ap','of','ca','ap']},
-  {id:5,name:'Oficina Álamos',tipo:'Oficina',loc:'Álamos, Pereira',ciudad:'Pereira',price:'$310.000.000',beds:0,baths:2,area:65,perm:false,emoji:'🏢',bg:'of',
-   estrato:'Estrato 4',antiguedad:'2 años',parq:'2 parqueaderos',piso:'Piso 3',
-   desc:'Moderna oficina en edificio corporativo de Álamos con sala de juntas, recepción y vista a la ciudad. Excelente ubicación estratégica para negocios.',
-   feats:['🚗 2 Parqueaderos','🛗 Ascensor','🔐 Seguridad 24h','🌇 Vista ciudad'],
-   gallery:['of','ap','ca','of','ap']},
-  {id:6,name:'Apto Cuba',tipo:'Apartamento',loc:'Cuba, Pereira',ciudad:'Pereira',price:'$195.000.000',beds:2,baths:2,area:62,perm:true,emoji:'🏠',bg:'ap',
-   estrato:'Estrato 3',antiguedad:'6 años',parq:'1 parqueadero',piso:'Piso 4',
-   desc:'Acogedor apartamento en Cuba con excelente distribución. Cocina integral, dos baños completos y buen estado de conservación. Ideal para primera vivienda.',
-   feats:['🚗 Parqueadero','🛗 Ascensor','🔐 Portería'],
-   gallery:['ap','ca','of','ap','ca']},
-  {id:7,name:'Casa Quintas',tipo:'Casa',loc:'Quintas de la Badea, Dosquebradas',ciudad:'Dosquebradas',price:'$520.000.000',beds:3,baths:3,area:140,perm:false,emoji:'🏡',bg:'ca',
-   estrato:'Estrato 4',antiguedad:'4 años',parq:'2 parqueaderos',piso:'Casa 2 pisos',
-   desc:'Hermosa casa de dos pisos en conjunto residencial Quintas de la Badea. Sala doble, comedor, cocina abierta, patio y cuarto de servicio. Zona tranquila y segura.',
-   feats:['🚗 Garaje doble','🌿 Patio','🔐 Conjunto cerrado','🐾 Acepta mascotas'],
-   gallery:['ca','ap','of','ca','ap']},
-  {id:8,name:'Apto Av. 30',tipo:'Apartamento',loc:'Av. 30 de Agosto, Pereira',ciudad:'Pereira',price:'$270.000.000',beds:3,baths:2,area:72,perm:true,emoji:'🏢',bg:'ap',
-   estrato:'Estrato 3',antiguedad:'7 años',parq:'1 parqueadero',piso:'Piso 6',
-   desc:'Amplio apartamento sobre la Avenida 30 de Agosto con fácil acceso a toda la ciudad. Sala-comedor con balcón, tres habitaciones y acabados en buen estado.',
-   feats:['🚗 Parqueadero','🛗 Ascensor','🔆 Balcón','🌇 Vista avenida'],
-   gallery:['ap','of','ca','ap','of']},
-  {id:9,name:'Casa La Primavera',tipo:'Casa',loc:'La Primavera, Santa Rosa',ciudad:'Santa Rosa de Cabal',price:'$420.000.000',beds:3,baths:2,area:120,perm:false,emoji:'🏡',bg:'ca',
-   estrato:'Estrato 3',antiguedad:'5 años',parq:'1 parqueadero',piso:'Casa independiente',
-   desc:'Casa familiar en el sector La Primavera de Santa Rosa de Cabal. Diseño funcional con sala amplia, comedor, cocina y patio trasero. Cerca de colegios y supermercados.',
-   feats:['🚗 Garaje','🌿 Patio trasero','🔐 Barrio tranquilo'],
-   gallery:['ca','ap','of','ca','ap']},
-  {id:10,name:'Apto Santa Rosa',tipo:'Apartamento',loc:'Centro, Santa Rosa de Cabal',ciudad:'Santa Rosa de Cabal',price:'$185.000.000',beds:2,baths:1,area:58,perm:false,emoji:'🏢',bg:'ap',
-   estrato:'Estrato 2',antiguedad:'9 años',parq:'Sin parqueadero',piso:'Piso 2',
-   desc:'Apartamento económico en el centro de Santa Rosa de Cabal, ideal para inversión o primera vivienda. Cerca de todo con fácil acceso al transporte.',
-   feats:['🛗 Ascensor','🔐 Portería'],
-   gallery:['ap','ca','of','ap','ca']},
-  {id:11,name:'Finca Vereda Termales',tipo:'Casa',loc:'Vereda Termales, Santa Rosa',ciudad:'Santa Rosa de Cabal',price:'$750.000.000',beds:4,baths:3,area:320,perm:true,emoji:'🌿',bg:'ca',
-   estrato:'Rural',antiguedad:'15 años',parq:'Amplio',piso:'Casa 1 piso',
-   desc:'Espectacular finca en la Vereda Termales de Santa Rosa de Cabal. Rodeada de naturaleza, con cascada propia, cultivos y zona de descanso. Ideal para turismo o retiro.',
-   feats:['🌿 Jardín extenso','🏊 Zona de piscina','🌾 Cultivos','🌊 Acceso a agua','🏔️ Vista a montañas'],
-   gallery:['ca','of','ap','ca','of']},
-  {id:12,name:'Local Comercial',tipo:'Oficina',loc:'Calle 13, Dosquebradas',ciudad:'Dosquebradas',price:'$280.000.000',beds:0,baths:1,area:80,perm:false,emoji:'🏢',bg:'of',
-   estrato:'Comercial',antiguedad:'12 años',parq:'1 parqueadero',piso:'Local nivel 1',
-   desc:'Local comercial con gran visibilidad en la Calle 13 de Dosquebradas. Alto flujo peatonal y vehicular. Apto para todo tipo de negocio.',
-   feats:['🚗 Parqueadero','🌇 Alta visibilidad','🚶 Zona comercial'],
-   gallery:['of','ap','ca','of','ap']},
-];
+// ════════════════════════════════════════════
+// SUPABASE CONFIGURATION
+// Reemplaza estos valores con los tuyos de:
+// https://supabase.com → Settings → API
+// ════════════════════════════════════════════
+const SUPABASE_URL = 'https://trbamfvvpdmmdxpjiiqx.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_RyY-UE50Ej5P4wGKtdAc7A_HdBOGkLo';
+
+const _supabase = window.supabase
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+// PROPS se carga desde Supabase. Array local como fallback.
+let PROPS = [];
 let activeCiudad='Todos';
 
 /* ── CAROUSEL ── */
@@ -2421,19 +2375,31 @@ function openPropDetail(id){
   pdCurrentProp = p;
   pdCurrentImg = 0;
 
-  // Gallery
+  // Gallery — supports real image URLs from Supabase OR emoji placeholders
   const gallery = p.gallery || [p.bg,p.bg,p.bg];
   const mainImg = document.getElementById('pdMainImg');
-  mainImg.style.background = GALLERY_BG[gallery[0]][0];
-  mainImg.innerHTML = '<span style="font-size:5rem;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))">' + (GALLERY_EMOJI[gallery[0]]||'🏠') + '</span>';
+  function renderMainImg(src, bg, idx){
+    if(src && src.startsWith('http')){
+      mainImg.style.background = '#0a1428';
+      mainImg.innerHTML = '<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;border-radius:0" onerror="this.parentNode.innerHTML=\'<span style=\"font-size:5rem\">🏠</span>\'">';
+    } else {
+      mainImg.style.background = GALLERY_BG[bg||'ap'][idx%5];
+      mainImg.innerHTML = '<span style="font-size:5rem;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))">'+(GALLERY_EMOJI[bg||'ap']||'🏠')+'</span>';
+    }
+  }
+  renderMainImg(gallery[0] && gallery[0].startsWith('http') ? gallery[0] : null, gallery[0], 0);
   const counter = document.getElementById('pdCounter');
   if(counter) counter.textContent = '1 / ' + gallery.length;
 
   const thumbsEl = document.getElementById('pdThumbs');
-  thumbsEl.innerHTML = gallery.map((bg,i)=>
-    '<div class="pd-thumb'+(i===0?' active':'')+'" onclick="pdSelectImg('+i+')" style="background:'+GALLERY_BG[bg][i%5]+'">'+
-    (GALLERY_EMOJI[bg]||'🏠')+'</div>'
-  ).join('');
+  thumbsEl.innerHTML = gallery.map((src,i)=>{
+    const isUrl = src && src.startsWith('http');
+    const bg2 = isUrl ? '#0a1428' : (GALLERY_BG[src||'ap'][i%5]);
+    const inner = isUrl
+      ? '<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;border-radius:6px" onerror="this.style.display=\'none\'">'
+      : (GALLERY_EMOJI[src||'ap']||'🏠');
+    return '<div class="pd-thumb'+(i===0?' active':'')+'" onclick="pdSelectImg('+i+')" style="background:'+bg2+'">'+inner+'</div>';
+  }).join('');
 
   // Header
   document.getElementById('pdTipo').textContent = p.tipo;
@@ -2472,14 +2438,18 @@ function pdSelectImg(i){
   const p = pdCurrentProp;
   if(!p) return;
   const gallery = p.gallery || [p.bg];
-  // Clamp index
   pdCurrentImg = ((i % gallery.length) + gallery.length) % gallery.length;
-  const bg = gallery[pdCurrentImg] || p.bg;
+  const src = gallery[pdCurrentImg];
+  const isUrl = src && src.startsWith('http');
   const mainImg = document.getElementById('pdMainImg');
-  mainImg.style.background = GALLERY_BG[bg][pdCurrentImg%5];
-  mainImg.innerHTML = '<span style="font-size:5rem;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))">'+(GALLERY_EMOJI[bg]||'🏠')+'</span>';
+  if(isUrl){
+    mainImg.style.background='#0a1428';
+    mainImg.innerHTML='<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;border-radius:0" onerror="this.parentNode.innerHTML=\'<span style=\"font-size:5rem\">🏠</span>\'">';
+  } else {
+    mainImg.style.background = GALLERY_BG[src||'ap'][pdCurrentImg%5];
+    mainImg.innerHTML = '<span style="font-size:5rem;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))">'+(GALLERY_EMOJI[src||'ap']||'🏠')+'</span>';
+  }
   document.querySelectorAll('.pd-thumb').forEach((t,idx)=>t.classList.toggle('active',idx===pdCurrentImg));
-  // Update counter
   const counter = document.getElementById('pdCounter');
   if(counter) counter.textContent = (pdCurrentImg+1)+' / '+gallery.length;
 }
@@ -2507,10 +2477,130 @@ function closePropDetail(){
   },{passive:true});
 })();
 
+
+/* ════════════════════════════════════════════
+   SUPABASE DATA LOADING
+   ════════════════════════════════════════════ */
+
+// Map Supabase row → internal property object
+function mapProp(row) {
+  // Determine visual style from tipo
+  const bgMap = {
+    'Apartamento': 'ap',
+    'Casa': 'ca',
+    'Oficina': 'of',
+    'Local': 'of',
+    'Finca': 'ca',
+    'Lote': 'ca',
+  };
+  const emojiMap = {
+    'Apartamento': '🏢',
+    'Casa': '🏡',
+    'Oficina': '🏢',
+    'Local': '🏢',
+    'Finca': '🌿',
+    'Lote': '🌾',
+  };
+  const tipo = row.tipo || 'Apartamento';
+  const bg = bgMap[tipo] || 'ap';
+
+  // Format price with dots
+  const priceNum = parseFloat(row.precio) || 0;
+  const priceFmt = priceNum > 0
+    ? '$' + priceNum.toLocaleString('es-CO')
+    : row.precio || 'Consultar';
+
+  // Build features from imagen field (JSON array) or empty
+  let feats = [];
+  try { feats = JSON.parse(row.caracteristicas || '[]'); } catch(e) {}
+
+  // Gallery: if imagen is a URL use it, else use bg theme
+  let gallery = [bg, bg, bg, bg, bg];
+  let imgUrl = null;
+  if (row.imagen && row.imagen.startsWith('http')) {
+    imgUrl = row.imagen;
+    gallery = [row.imagen, bg, bg, bg, bg];
+  }
+
+  return {
+    id:          row.id,
+    name:        row.titulo || 'Sin título',
+    tipo:        tipo,
+    loc:         row.ciudad || '',
+    ciudad:      row.ciudad || '',
+    price:       priceFmt,
+    beds:        parseInt(row.habitaciones) || 0,
+    baths:       parseInt(row.banos) || 0,
+    area:        parseInt(row.area) || 0,
+    perm:        row.permuta || false,
+    emoji:       emojiMap[tipo] || '🏠',
+    bg:          bg,
+    desc:        row.descripcion || '',
+    feats:       feats,
+    gallery:     gallery,
+    imgUrl:      imgUrl,
+    // Extra fields
+    estrato:     row.estrato || '',
+    antiguedad:  row.antiguedad || '',
+    parq:        row.parqueadero || '',
+    piso:        row.piso || '',
+  };
+}
+
+// Load properties from Supabase
+async function loadPropsFromSupabase() {
+  if (!_supabase) {
+    console.warn('Supabase not configured. Using fallback data.');
+    useFallbackProps();
+    return;
+  }
+
+  // Show loading state
+  const track = document.getElementById('ct');
+  if (track) {
+    track.innerHTML = '<div style="display:flex;align-items:center;gap:.8rem;padding:2rem;color:rgba(255,255,255,.5);font-size:.85rem"><div class="prop-loader"></div>Cargando propiedades...</div>';
+  }
+
+  try {
+    const { data, error } = await _supabase
+      .from('propiedades')
+      .select('*')
+      .order('id', { ascending: true });
+
+    if (error) throw error;
+
+    if (data && data.length > 0) {
+      PROPS = data.map(mapProp);
+      console.log('✓ Propiedades cargadas desde Supabase:', PROPS.length);
+    } else {
+      console.warn('No hay propiedades en Supabase. Usando datos de ejemplo.');
+      useFallbackProps();
+    }
+  } catch (err) {
+    console.error('Error cargando Supabase:', err.message);
+    useFallbackProps();
+  }
+
+  // Render carousel with loaded data
+  renderCarousel();
+  initAcDots();
+  reinitCardEffects();
+}
+
+// Fallback: datos de ejemplo si Supabase falla
+function useFallbackProps() {
+  PROPS = [
+    {id:1,name:'Apto Pinares',tipo:'Apartamento',loc:'Pinares, Pereira',ciudad:'Pereira',price:'$380.000.000',beds:3,baths:2,area:85,perm:false,emoji:'🏢',bg:'ap',estrato:'Estrato 4',antiguedad:'5 años',parq:'1 parqueadero',piso:'Piso 8',desc:'Hermoso apartamento en el exclusivo sector de Pinares con acabados premium.',feats:['🚗 Garaje','🔐 Conjunto cerrado','🛗 Ascensor','🌇 Vista panorámica'],gallery:['ap','ca','of','ap','ca']},
+    {id:2,name:'Casa El Poblado',tipo:'Casa',loc:'El Poblado, Pereira',ciudad:'Pereira',price:'$650.000.000',beds:4,baths:3,area:180,perm:true,emoji:'🏡',bg:'ca',estrato:'Estrato 5',antiguedad:'8 años',parq:'2 parqueaderos',piso:'Casa independiente',desc:'Amplia casa en conjunto residencial cerrado de El Poblado.',feats:['🚗 Garaje doble','🌿 Jardín privado','🔐 Conjunto cerrado'],gallery:['ca','ap','of','ca','ap']},
+    {id:3,name:'Apto Dosquebradas',tipo:'Apartamento',loc:'Centro, Dosquebradas',ciudad:'Dosquebradas',price:'$220.000.000',beds:2,baths:1,area:55,perm:false,emoji:'🏗️',bg:'ap',estrato:'Estrato 3',antiguedad:'3 años',parq:'1 parqueadero',piso:'Piso 5',desc:'Apartamento moderno en el centro de Dosquebradas.',feats:['🚗 Parqueadero','🛗 Ascensor'],gallery:['ap','of','ca','ap','of']},
+    {id:4,name:'Finca Termales',tipo:'Finca',loc:'Vereda Termales, Santa Rosa',ciudad:'Santa Rosa de Cabal',price:'$750.000.000',beds:4,baths:3,area:320,perm:true,emoji:'🌿',bg:'ca',estrato:'Rural',antiguedad:'15 años',parq:'Amplio',piso:'Casa 1 piso',desc:'Espectacular finca en Vereda Termales rodeada de naturaleza.',feats:['🌿 Jardín extenso','🏊 Zona de piscina','🌾 Cultivos'],gallery:['ca','of','ap','ca','of']},
+  ];
+}
+
 /* ── INIT ── */
-renderCarousel();
+// renderCarousel() is now called by loadPropsFromSupabase()
+loadPropsFromSupabase();
 initAcDrag();
-initAcDots();
 initReveal();
 initStats();
 
