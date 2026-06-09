@@ -152,7 +152,7 @@ header.s nav a:hover{color:var(--orange);background:rgba(255,122,0,.07);border-c
 .h-stat{flex:1;display:flex;align-items:center;gap:1rem;padding:1.5rem 1.8rem;border-right:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden;transition:background .35s}
 .h-stat:last-child{border-right:none}
 .h-stat-icon{font-size:1.4rem}
-.h-stat-n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;line-height:1;background:linear-gradient(135deg,#FF7A00,#FFB347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-stat-n{font-family:'Montserrat',sans-serif;font-size:1.9rem;font-weight:700;color:#fff;line-height:1}
 .h-stat-l{font-family:'Montserrat',sans-serif;font-size:.62rem;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem;line-height:1.4}
 
 /* ── STATS BAR (page) ── */
@@ -982,7 +982,7 @@ nav.open .btn-nav{background:linear-gradient(135deg,#FF7A00,#FFB347)!important;c
 .pd-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:.3rem}
 .pd-loc{font-size:.82rem;color:rgba(255,255,255,.5)}
 .pd-price-box{text-align:right;flex-shrink:0}
-.pd-price{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#FF7A00,#FFB347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+.pd-price{font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;white-space:nowrap;letter-spacing:.02em}
 .pd-price-label{font-size:.65rem;color:rgba(255,255,255,.3);text-align:right;margin-top:.1rem}
 
 /* Specs row */
@@ -1206,7 +1206,48 @@ nav.open .btn-nav{background:linear-gradient(135deg,#FF7A00,#FFB347)!important;c
   </div>
   <div class="carousel-outer rv rv-up">
     <div class="carousel-track-wrap">
-      <div class="carousel-track" id="ct"></div>
+      <div class="carousel-track" id="ct">
+        <div class="pc">
+          <div class="pc-img"><div class="pc-ph ap">🏢</div></div>
+          <div class="pc-body">
+            <div class="pc-loc">📍 Pinares, Pereira</div>
+            <div class="pc-name">Apartamento Pinares</div>
+            <div class="pc-price">$380.000.000 <small>COP</small></div>
+            <div class="pc-specs"><div class="pc-spec">🛏 3</div><div class="pc-spec">🚿 2</div><div class="pc-spec">📐 85m²</div></div>
+            <div class="pc-acts"><button class="btn-pc-v" onclick="openPropDetail(1)">Ver detalles</button><button class="btn-pc-a" onclick="openModal(1)">Agendar</button></div>
+          </div>
+        </div>
+        <div class="pc">
+          <div class="pc-img"><div class="pc-ph ca">🏡</div></div>
+          <div class="pc-body">
+            <div class="pc-loc">📍 El Poblado, Pereira</div>
+            <div class="pc-name">Casa El Poblado</div>
+            <div class="pc-price">$650.000.000 <small>COP</small></div>
+            <div class="pc-specs"><div class="pc-spec">🛏 4</div><div class="pc-spec">🚿 3</div><div class="pc-spec">📐 180m²</div></div>
+            <div class="pc-acts"><button class="btn-pc-v" onclick="openPropDetail(2)">Ver detalles</button><button class="btn-pc-a" onclick="openModal(2)">Agendar</button></div>
+          </div>
+        </div>
+        <div class="pc">
+          <div class="pc-img"><div class="pc-ph ap">🏗️</div></div>
+          <div class="pc-body">
+            <div class="pc-loc">📍 Centro, Dosquebradas</div>
+            <div class="pc-name">Apto Dosquebradas</div>
+            <div class="pc-price">$220.000.000 <small>COP</small></div>
+            <div class="pc-specs"><div class="pc-spec">🛏 2</div><div class="pc-spec">🚿 1</div><div class="pc-spec">📐 55m²</div></div>
+            <div class="pc-acts"><button class="btn-pc-v" onclick="openPropDetail(3)">Ver detalles</button><button class="btn-pc-a" onclick="openModal(3)">Agendar</button></div>
+          </div>
+        </div>
+        <div class="pc">
+          <div class="pc-img"><div class="pc-ph ca">🌿</div></div>
+          <div class="pc-body">
+            <div class="pc-loc">📍 Cerritos, Pereira</div>
+            <div class="pc-name">Casa Cerritos</div>
+            <div class="pc-price">$890.000.000 <small>COP</small></div>
+            <div class="pc-specs"><div class="pc-spec">🛏 5</div><div class="pc-spec">🚿 4</div><div class="pc-spec">📐 280m²</div></div>
+            <div class="pc-acts"><button class="btn-pc-v" onclick="openPropDetail(4)">Ver detalles</button><button class="btn-pc-a" onclick="openModal(4)">Agendar</button></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="carousel-controls">
       <button class="cc-btn" id="cprev" onclick="moveCar(-1)">←</button>
@@ -1228,7 +1269,26 @@ nav.open .btn-nav{background:linear-gradient(135deg,#FF7A00,#FFB347)!important;c
   <div class="ac-outer">
     <div class="ac-track-wrap rv rv-up d2" id="acWrap">
     <div class="ac-track" id="acTrack">
-      <!-- Videos loaded dynamically from Supabase table 'videos' -->
+      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
+        <div class="ac-thumb" style="background:linear-gradient(135deg,#1a0d2e,#3b1865);display:flex;align-items:center;justify-content:center">🏠<div class="ac-play">▶</div></div>
+        <div class="ac-body"><div class="ac-dur">12 min · Básico</div><div class="ac-title">Cómo comprar tu primera propiedad</div></div>
+      </div>
+      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
+        <div class="ac-thumb" style="background:linear-gradient(135deg,#0d1b35,#1a3460);display:flex;align-items:center;justify-content:center">🏦<div class="ac-play">▶</div></div>
+        <div class="ac-body"><div class="ac-dur">18 min · Intermedio</div><div class="ac-title">Crédito hipotecario paso a paso</div></div>
+      </div>
+      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
+        <div class="ac-thumb" style="background:linear-gradient(135deg,#0d2318,#144d30);display:flex;align-items:center;justify-content:center">🔄<div class="ac-play">▶</div></div>
+        <div class="ac-body"><div class="ac-dur">10 min · Básico</div><div class="ac-title">¿Qué es una permuta y cómo funciona?</div></div>
+      </div>
+      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
+        <div class="ac-thumb" style="background:linear-gradient(135deg,#1a1500,#3d3000);display:flex;align-items:center;justify-content:center">📈<div class="ac-play">▶</div></div>
+        <div class="ac-body"><div class="ac-dur">22 min · Avanzado</div><div class="ac-title">Cómo invertir en bienes raíces</div></div>
+      </div>
+      <div class="ac-card" onclick="showToast('📺','Próximamente','Preparando este contenido')">
+        <div class="ac-thumb" style="background:linear-gradient(135deg,#1a0505,#3d1010);display:flex;align-items:center;justify-content:center">📊<div class="ac-play">▶</div></div>
+        <div class="ac-body"><div class="ac-dur">15 min · Avanzado</div><div class="ac-title">Cómo valuar correctamente un inmueble</div></div>
+      </div>
     </div>
   </div>
   <div class="carousel-controls" style="margin-top:1.5rem">
@@ -1816,148 +1876,172 @@ nav.open .btn-nav{background:linear-gradient(135deg,#FF7A00,#FFB347)!important;c
 
 <script>
 /* ── CURSOR ── */
-const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
-(function animR(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR)})();
-document.querySelectorAll('a,button,.pc,.ac-card,.ben-card,.own-item').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.classList.add('h');ring.classList.add('h')});
-  el.addEventListener('mouseleave',()=>{cur.classList.remove('h');ring.classList.remove('h')});
-});
+(function(){
+  const cur=document.getElementById('cur');
+  const ring=document.getElementById('cur-r');
+  if(!cur||!ring) return;
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+  });
+  (function animR(){
+    rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(animR);
+  })();
+  document.querySelectorAll('a,button,.pc,.ac-card,.bn-flip-card').forEach(function(el){
+    el.addEventListener('mouseenter',function(){cur.classList.add('h');ring.classList.add('h');});
+    el.addEventListener('mouseleave',function(){cur.classList.remove('h');ring.classList.remove('h');});
+  });
+})();
 
-/* ── HEADER ── */
-window.addEventListener('scroll',()=>{
-  document.getElementById('hdr').classList.toggle('s',scrollY>80);
-  // Close mobile menu on scroll
-  document.getElementById('nav').classList.remove('open')},{passive:true});
-document.getElementById('ham').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
+/* ── HEADER SCROLL + MOBILE NAV ── */
+window.addEventListener('scroll',function(){
+  var hdr=document.getElementById('hdr');
+  if(hdr) hdr.classList.toggle('s',scrollY>80);
+  var nav=document.getElementById('nav');
+  if(nav) nav.classList.remove('open');
+},{passive:true});
+(function(){
+  var ham=document.getElementById('ham');
+  if(ham) ham.addEventListener('click',function(){
+    var nav=document.getElementById('nav');
+    if(nav) nav.classList.toggle('open');
+  });
+})();
 
 /* ── SMOOTH SCROLL ── */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});document.getElementById('nav').classList.remove('open')}});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+    var nav=document.getElementById('nav');
+    if(nav) nav.classList.remove('open');
+  });
 });
 
-/* ── DATA ── */
-// ════════════════════════════════════════════
-// SUPABASE CONFIGURATION
-// Reemplaza estos valores con los tuyos de:
-// https://supabase.com → Settings → API
-// ════════════════════════════════════════════
-const SUPABASE_URL = 'https://trbamfvvpdmmdxpjiiqx.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_RyY-UE50Ej5P4wGKtdAc7A_HdBOGkLo';
+/* ── TOAST ── */
+function showToast(icon, title, msg){
+  var t=document.getElementById('toast');
+  if(!t) return;
+  var ico=document.getElementById('tIco');
+  var tit=document.getElementById('tTit');
+  var tm=document.getElementById('tMsg');
+  if(ico) ico.textContent=icon;
+  if(tit) tit.textContent=title;
+  if(tm) tm.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(t._tmr);
+  t._tmr=setTimeout(function(){t.classList.remove('show');},3000);
+}
 
-const _supabase = window.supabase
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  : null;
+/* ── SUPABASE CONFIG ── */
+var SUPABASE_URL='https://trbamfvvpdmmdxpjiiqx.supabase.co';
+var SUPABASE_ANON_KEY='sb_publishable_RyY-UE50Ej5P4wGKtdAc7A_HdBOGkLo';
+var _supabase=null;
+try{
+  if(window.supabase&&window.supabase.createClient){
+    _supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  }
+}catch(e){console.warn('[Supabase]',e.message);}
 
-// PROPS se carga desde Supabase. Array local como fallback.
-let PROPS = [];
-let activeCiudad='Todos';
-
-/* ── CAROUSEL ── */
-let carIdx=0, autoTimer, isAnimating=false;
-const VISIBLE=4;
+/* ── PROPS DATA ── */
+var PROPS=[];
+var activeCiudad='Todos';
+var carIdx=0,autoTimer,isAnimating=false;
 
 function getFilteredProps(){
   if(activeCiudad==='Todos') return PROPS;
-  return PROPS.filter(p=>p.ciudad===activeCiudad);
+  return PROPS.filter(function(p){return p.ciudad===activeCiudad;});
 }
 
 function filterProps(ciudad){
   activeCiudad=ciudad;
-  // Update active button
-  document.querySelectorAll('.pf-btn').forEach(b=>{
-    const txt=b.querySelector('span').textContent;
-    b.classList.toggle('active',
-      ciudad==='Todos'?txt.includes('Todos'):txt.includes(ciudad)
-    );
+  document.querySelectorAll('.pf-btn').forEach(function(b){
+    var txt=b.querySelector('span')?b.querySelector('span').textContent:'';
+    b.classList.toggle('active',ciudad==='Todos'?txt.includes('Todos'):txt.includes(ciudad));
   });
   carIdx=0;
-  // Re-render carousel with animation
   renderCarousel(true);
   reinitCardEffects();
 }
 
-function renderCarousel(animated=false){
-  const track=document.getElementById('ct');
-  const filtered=getFilteredProps();
-  if(filtered.length===0){
-    track.innerHTML='<div class="props-empty" style="display:block"><span class="props-empty-icon">🏙️</span><h3>Próximamente</h3><p>Estamos cargando propiedades en esta zona. ¡Vuelve pronto!</p></div>';
-    document.getElementById('cdots').innerHTML='';
-    clearInterval(autoTimer); return;
-  }
-  // Duplicate for infinite carousel
-  const all=[...filtered,...filtered,...filtered];
-  track.innerHTML=all.map((p,i)=>`
-    <div class="pc${animated?' entering':''}">
-      <div class="pc-img">
-        <div class="pc-ph ${p.bg}">${p.emoji}</div>
-        <div class="pc-badges">
-          <span class="pcb pcb-type">${p.tipo}</span>
-          ${p.perm?'<span class="pcb pcb-perm">Permuta</span>':''}
-        </div>
-      </div>
-      <div class="pc-body">
-        <div class="pc-loc">📍 ${p.loc}</div>
-        <div class="pc-name">${p.name}</div>
-        <div class="pc-price">${p.price} <small>COP</small></div>
-        <div class="pc-specs">
-          ${p.beds>0?'<div class="pc-spec">🛏 '+p.beds+'</div>':''}
-          <div class="pc-spec">🚿 ${p.baths}</div>
-          <div class="pc-spec">📐 ${p.area}m²</div>
-        </div>
-        <div class="pc-acts">
-          <button class="btn-pc-v" onclick="openPropDetail(${p.id})">Ver detalles</button>
-          <button class="btn-pc-a" onclick="openModal(${p.id})">Agendar</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  // Dots for filtered items
-  const dotsEl=document.getElementById('cdots');
-  dotsEl.innerHTML=filtered.map((_,i)=>`<div class="cc-dot ${i===0?'a':''}" onclick="goCard(${i})"></div>`).join('');
-
-  // Start at first card, always visible
-  carIdx=0;
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      updateCarousel(false);
-    });
-  });
+/* ── FALLBACK PROPS ── */
+function useFallbackProps(){
+  PROPS=[
+    {id:1,name:'Apto Pinares',tipo:'Apartamento',loc:'Pinares, Pereira',ciudad:'Pereira',price:'$380.000.000',beds:3,baths:2,area:85,perm:false,emoji:'🏢',bg:'ap',estrato:'Estrato 4',antiguedad:'5 años',parq:'1 parqueadero',piso:'Piso 8',desc:'Hermoso apartamento en el exclusivo sector de Pinares con acabados premium, cocina integral y vistas panorámicas.',feats:['🚗 Garaje','🔐 Conjunto cerrado','🛗 Ascensor','🌇 Vista panorámica'],gallery:['ap','ca','of','ap','ca']},
+    {id:2,name:'Casa El Poblado',tipo:'Casa',loc:'El Poblado, Pereira',ciudad:'Pereira',price:'$650.000.000',beds:4,baths:3,area:180,perm:true,emoji:'🏡',bg:'ca',estrato:'Estrato 5',antiguedad:'8 años',parq:'2 parqueaderos',piso:'Casa independiente',desc:'Amplia casa en conjunto residencial cerrado con jardín privado y estudio.',feats:['🚗 Garaje doble','🌿 Jardín privado','🔐 Conjunto cerrado','⚡ Planta eléctrica'],gallery:['ca','ap','of','ca','ap']},
+    {id:3,name:'Apto Dosquebradas',tipo:'Apartamento',loc:'Centro, Dosquebradas',ciudad:'Dosquebradas',price:'$220.000.000',beds:2,baths:1,area:55,perm:false,emoji:'🏗️',bg:'ap',estrato:'Estrato 3',antiguedad:'3 años',parq:'1 parqueadero',piso:'Piso 5',desc:'Apartamento moderno con balcón cerca de centros comerciales.',feats:['🚗 Parqueadero','🛗 Ascensor','🔆 Balcón'],gallery:['ap','of','ca','ap','of']},
+    {id:4,name:'Casa Cerritos',tipo:'Casa',loc:'Cerritos, Pereira',ciudad:'Pereira',price:'$890.000.000',beds:5,baths:4,area:280,perm:true,emoji:'🌿',bg:'ca',estrato:'Estrato 6',antiguedad:'10 años',parq:'3 parqueaderos',piso:'Casa independiente',desc:'Lujosa casa campestre en Cerritos con piscina privada y jardín.',feats:['🚗 Triple garaje','🏊 Piscina privada','🌿 Jardín amplio','🔆 Terraza BBQ'],gallery:['ca','ap','of','ca','ap']},
+    {id:5,name:'Oficina Álamos',tipo:'Oficina',loc:'Álamos, Pereira',ciudad:'Pereira',price:'$310.000.000',beds:0,baths:2,area:65,perm:false,emoji:'🏢',bg:'of',estrato:'Estrato 4',antiguedad:'2 años',parq:'2 parqueaderos',piso:'Piso 3',desc:'Moderna oficina en edificio corporativo con sala de juntas.',feats:['🚗 2 Parqueaderos','🛗 Ascensor','🌇 Vista ciudad'],gallery:['of','ap','ca','of','ap']},
+    {id:6,name:'Finca Termales',tipo:'Finca',loc:'Vereda Termales, Santa Rosa',ciudad:'Santa Rosa de Cabal',price:'$750.000.000',beds:4,baths:3,area:320,perm:true,emoji:'🌿',bg:'ca',estrato:'Rural',antiguedad:'15 años',parq:'Amplio',piso:'Casa 1 piso',desc:'Espectacular finca en Vereda Termales rodeada de naturaleza.',feats:['🌿 Jardín extenso','🏊 Zona piscina','🌾 Cultivos','🏔️ Vista montañas'],gallery:['ca','of','ap','ca','of']},
+  ];
 }
 
+/* ── CAROUSEL ── */
 function getCardW(){
-  const card=document.querySelector('.pc');
-  return card ? card.offsetWidth + 19 : 259; // 240+gap
+  var card=document.querySelector('.pc');
+  return card?card.offsetWidth+19:259;
 }
 
-function updateCarousel(animate=true){
-  const track=document.getElementById('ct');
-  const w=getCardW();
+function updateCarousel(animate){
+  var track=document.getElementById('ct');
+  if(!track) return;
+  var w=getCardW();
   if(!animate) track.classList.add('no-transition');
-  track.style.transform=`translateX(-${carIdx*w}px)`;
-  if(!animate) setTimeout(()=>track.classList.remove('no-transition'),50);
-  // Update dots
-  const filtered2=getFilteredProps();
+  track.style.transform='translateX(-'+(carIdx*w)+'px)';
+  if(!animate) setTimeout(function(){track.classList.remove('no-transition');},50);
+  var filtered2=getFilteredProps();
   if(filtered2.length>0){
-    const dotIdx=((carIdx%filtered2.length)+filtered2.length)%filtered2.length;
-    document.querySelectorAll('.cc-dot').forEach((d,i)=>d.classList.toggle('a',i===dotIdx));
+    var dotIdx=((carIdx%filtered2.length)+filtered2.length)%filtered2.length;
+    document.querySelectorAll('.cc-dot').forEach(function(d,i){d.classList.toggle('a',i===dotIdx);});
   }
+}
+
+function renderCarousel(animated){
+  var track=document.getElementById('ct');
+  if(!track) return;
+  var filtered=getFilteredProps();
+  if(filtered.length===0){
+    track.innerHTML='<div class="props-empty" style="display:block"><span class="props-empty-icon">🏙️</span><h3>Próximamente</h3><p>Estamos cargando propiedades en esta zona.</p></div>';
+    var cd=document.getElementById('cdots');
+    if(cd) cd.innerHTML='';
+    return;
+  }
+  var all=filtered.concat(filtered).concat(filtered);
+  track.innerHTML=all.map(function(p,i){
+    return '<div class="pc'+(animated?' entering':'')+'">'
+      +'<div class="pc-img">'
+      +'<div class="pc-ph '+p.bg+'">'+p.emoji+'</div>'
+      +'<div class="pc-badges"><span class="pcb pcb-type">'+p.tipo+'</span>'+(p.perm?'<span class="pcb pcb-perm">Permuta</span>':'')+'</div>'
+      +'</div>'
+      +'<div class="pc-body">'
+      +'<div class="pc-loc">📍 '+p.loc+'</div>'
+      +'<div class="pc-name">'+p.name+'</div>'
+      +'<div class="pc-price">'+p.price+' <small>COP</small></div>'
+      +'<div class="pc-specs">'+(p.beds>0?'<div class="pc-spec">🛏 '+p.beds+'</div>':'')+'<div class="pc-spec">🚿 '+p.baths+'</div><div class="pc-spec">📐 '+p.area+'m²</div></div>'
+      +'<div class="pc-acts"><button class="btn-pc-v" onclick="openPropDetail('+p.id+')">Ver detalles</button><button class="btn-pc-a" onclick="openModal('+p.id+')">Agendar</button></div>'
+      +'</div></div>';
+  }).join('');
+  var dotsEl=document.getElementById('cdots');
+  if(dotsEl) dotsEl.innerHTML=filtered.map(function(_,i){return '<div class="cc-dot '+(i===0?'a':'')+'" onclick="goCard('+i+')"></div>';}).join('');
+  carIdx=0;
+  requestAnimationFrame(function(){requestAnimationFrame(function(){updateCarousel(false);});});
 }
 
 function moveCar(dir){
   clearTimeout(autoTimer);
   carIdx+=dir;
-  const track=document.getElementById('ct');
   updateCarousel(true);
-  const fLen=getFilteredProps().length;
+  var fLen=getFilteredProps().length;
+  var track=document.getElementById('ct');
+  if(!track) return;
   track.addEventListener('transitionend',function fix(){
     track.removeEventListener('transitionend',fix);
     if(carIdx>=fLen*2){carIdx=0;updateCarousel(false);}
     else if(carIdx<0){carIdx=fLen*2-1;updateCarousel(false);}
   },{once:true});
-  startAuto();
 }
 
 function goCard(i){
@@ -1966,759 +2050,448 @@ function goCard(i){
 }
 
 function startAuto(){
-  // Auto-scroll disabled — manual navigation only
   clearTimeout(autoTimer);
 }
 
-window.addEventListener('resize',()=>updateCarousel(false));
+function reinitCardEffects(){
+  document.querySelectorAll('.pc').forEach(function(card){
+    card.addEventListener('mousemove',function(e){
+      var rect=card.getBoundingClientRect();
+      var x=(e.clientX-rect.left)/rect.width-.5;
+      var y=(e.clientY-rect.top)/rect.height-.5;
+      card.style.transform='translateY(-6px) rotateX('+(-y*8)+'deg) rotateY('+(x*8)+'deg)';
+    });
+    card.addEventListener('mouseleave',function(){card.style.transform='';});
+  });
+}
 
-/* ── ACADEMIA DRAG ── */
-let acAutoTimer=null;
+/* ── ACADEMIA ── */
+var acAutoTimer=null;
+
 function initAcDrag(){
-  const w=document.getElementById('acWrap'); if(!w) return;
-  let down=false,sx,sl;
-  w.addEventListener('mousedown',e=>{down=true;sx=e.pageX-w.offsetLeft;sl=w.scrollLeft;stopAcAuto()});
-  w.addEventListener('mouseleave',()=>{down=false;startAcAuto()});
-  w.addEventListener('mouseup',()=>{down=false;startAcAuto()});
-  w.addEventListener('mousemove',e=>{if(!down)return;e.preventDefault();w.scrollLeft=sl-(e.pageX-w.offsetLeft-sx)*1.5});
-  let ts;
-  w.addEventListener('touchstart',e=>{ts=e.touches[0].clientX;sl=w.scrollLeft;stopAcAuto()},{passive:true});
-  w.addEventListener('touchmove',e=>{w.scrollLeft=sl+(ts-e.touches[0].clientX)},{passive:true});
-  w.addEventListener('touchend',()=>startAcAuto(),{passive:true});
+  var w=document.getElementById('acWrap');
+  if(!w) return;
+  var ts=0,sl=0;
+  w.addEventListener('touchstart',function(e){ts=e.touches[0].clientX;sl=w.scrollLeft;stopAcAuto();},{passive:true});
+  w.addEventListener('touchmove',function(e){w.scrollLeft=sl+(ts-e.touches[0].clientX);},{passive:true});
+  w.addEventListener('touchend',function(){startAcAuto();},{passive:true});
   startAcAuto();
 }
 
-function startAcAuto(){
-  stopAcAuto();
-  acAutoTimer=setInterval(()=>{
-    const w=document.getElementById('acWrap'); if(!w) return;
-    const card=w.querySelector('.ac-card');
-    const cardW=card?card.offsetWidth+22:282;
-    const maxScroll=w.scrollWidth-w.clientWidth;
-    if(w.scrollLeft>=maxScroll-10){
-      // Smooth return to start
-      w.scrollTo({left:0,behavior:'smooth'});
-    } else {
-      w.scrollBy({left:cardW,behavior:'smooth'});
-    }
-    setTimeout(()=>{
-      const idx=Math.round(w.scrollLeft/cardW);
-      document.querySelectorAll('#acDots .cc-dot').forEach((d,i)=>d.classList.toggle('a',i===idx%5));
-    },500);
-  },3200);
-}
+function startAcAuto(){}
+function stopAcAuto(){if(acAutoTimer){clearInterval(acAutoTimer);acAutoTimer=null;}}
 
-function stopAcAuto(){
-  if(acAutoTimer){clearInterval(acAutoTimer);acAutoTimer=null;}
-}
-function reinitCardEffects(){
-  setTimeout(()=>{initPropTilt();initMagneticBtns();},150);
-}
-
-// ── OWN-ITEM STAGGER ON SCROLL ──
-function initOwnItems(){
-  const list=document.querySelector('.own-list');
-  if(!list) return;
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        [...e.target.children].forEach((item,i)=>{
-          item.style.opacity='0';
-          item.style.transform='translateX(-20px)';
-          setTimeout(()=>{
-            item.style.transition='all .5s cubic-bezier(.16,1,.3,1)';
-            item.style.opacity='1';
-            item.style.transform='none';
-          }, i*80);
-        });
-        obs.unobserve(e.target);
-      }
-    });
-  },{threshold:.1});
-  obs.observe(list);
-}
-
-// ── HERO CONTENT PARALLAX ──
-let ticking=false;
-window.addEventListener('scroll',()=>{
-  if(!ticking){
-    requestAnimationFrame(()=>{
-      const y=scrollY;
-      const bg=document.querySelector('.h-bg-img');
-      const hc=document.querySelector('.h-content');
-      const orb=document.querySelector('.h-flare');
-      if(bg) bg.style.transform=`scale(1.04) translateY(${y*.22}px)`;
-      if(hc) hc.style.transform=`translateY(${y*.1}px)`;
-      if(orb) orb.style.transform=`translate(${y*.04}px,${y*.06}px)`;
-      ticking=false;
-    });
-    ticking=true;
-  }
-},{passive:true});
-
-/* ── INIT ALL PREMIUM FEATURES ── */
-
-
-/* Owner inline form JS (unused - using sell modal now) */
-function goOif(s){
-  // goOif is for inline form (unused - using sell modal instead)
-}
-
-function buildOifConfirm(){
-  const selCaract=[...document.querySelectorAll('#oifCaract .tg-btn.sel')].map(b=>b.textContent.trim()).join(', ');
-  const fotoCount=document.getElementById('oifFotos').files.length;
-  document.getElementById('oifConfBox').innerHTML=`
-    <div class="cr">👤 <strong>${document.getElementById('oifNombre').value||'—'}</strong> · ${document.getElementById('oifTel').value||'—'}</div>
-    <div class="cr">📍 <strong>${document.getElementById('oifDir').value||'—'}</strong></div>
-    <div class="cr">🏠 <strong>${document.getElementById('oifTipo').value||'—'}</strong> · ${document.getElementById('oifEstrato').value||'—'}</div>
-    <div class="cr">🛏 ${document.getElementById('oifHab').value||'—'} hab · 🚿 ${document.getElementById('oifBanos').value||'—'} baños · 📐 ${document.getElementById('oifArea').value||'—'} m²</div>
-    <div class="cr">💰 <strong>${document.getElementById('oifPrecio').value||'—'}</strong></div>
-    ${selCaract?'<div class="cr">✦ '+selCaract+'</div>':''}
-    <div class="cr">📸 ${fotoCount>0?fotoCount+' foto(s) adjunta(s)':'Sin fotos aún'} · ${document.getElementById('oifVisita').value||'Por coordinar'}</div>
-  `;
-}
-
-function previewOifFotos(input){
-  const prev=document.getElementById('oifPreviews');
-  prev.innerHTML='';
-  const files=[...input.files].slice(0,10);
-  files.forEach(f=>{
-    const url=URL.createObjectURL(f);
-    const img=document.createElement('img');
-    img.src=url; img.className='photo-thumb';
-    prev.appendChild(img);
-  });
-}
-
-function submitOif(){
-  document.querySelectorAll('.oif-section').forEach(s=>s.style.display='none');
-  document.querySelector('.oif-steps').style.opacity='.25';
-  document.getElementById('oifSuccess').style.display='block';
-}
-
-
-/* ── SELL MODAL JS ── */
-function openSellModal(){
-  const ov=document.getElementById('sellOv');
-  ov.classList.add('open');
-  document.body.style.overflow='hidden';
-  // Reset only elements INSIDE sell modal
-  ov.querySelectorAll('.oif-section').forEach(s=>{s.classList.remove('act');s.style.display='none'});
-  const s1=document.getElementById('sms-1');
-  if(s1){s1.classList.add('act');s1.style.display='block';}
-  ['sms1','sms2','sms3','sms4'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.classList.remove('act','done');
-  });
-  document.getElementById('sms1').classList.add('act');
-  const suc=document.getElementById('smSuccess');
-  if(suc) suc.style.display='none';
-  const steps=ov.querySelector('.oif-steps');
-  if(steps) steps.style.opacity='1';
-}
-
-function closeSellModal(){
-  document.getElementById('sellOv').classList.remove('open');
-  document.body.style.overflow='';
-}
-
-function handleSellOv(e){if(e.target===document.getElementById('sellOv'))closeSellModal();}
-
-function goSm(s){
-  document.querySelectorAll('#sellOv .oif-section').forEach(el=>el.classList.remove('act'));
-  const sec=document.getElementById('sms-'+s);
-  if(sec) sec.classList.add('act');
-  ['sms1','sms2','sms3','sms4'].forEach((id,i)=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    el.classList.remove('act','done');
-    if(i+1<s) el.classList.add('done');
-    else if(i+1===s) el.classList.add('act');
-  });
-  if(s===4) buildSmConfirm();
-}
-
-function buildSmConfirm(){
-  const sel=[...document.querySelectorAll('#smCaract .tg-btn.sel')].map(b=>b.textContent.trim()).join(', ');
-  const fc=document.getElementById('smFotos').files.length;
-  const barrio=document.getElementById('smBarrio')?document.getElementById('smBarrio').value:'';
-  const ciudad=document.getElementById('smCiudadProp')?document.getElementById('smCiudadProp').value:'';
-  const parq=document.getElementById('smParq')?document.getElementById('smParq').value:'';
-  const negoc=document.getElementById('smNegoc')?document.getElementById('smNegoc').value:'';
-  document.getElementById('smConfBox').innerHTML=
-    '<div class="cr">👤 <strong>'+(document.getElementById('smNombre').value||'—')+'</strong> · '+(document.getElementById('smTel').value||'—')+'</div>'+
-    '<div class="cr">📍 <strong>'+(document.getElementById('smDir').value||'—')+'</strong>'+(barrio?' · '+barrio:'')+' · '+ciudad+'</div>'+
-    '<div class="cr">🏠 <strong>'+(document.getElementById('smTipo').value||'—')+'</strong> · '+(document.getElementById('smEstrato').value||'—')+'</div>'+
-    '<div class="cr">🛏 '+(document.getElementById('smHab').value||'—')+' hab · 🚿 '+(document.getElementById('smBanos').value||'—')+' baños · 📐 '+(document.getElementById('smArea').value||'—')+' m²'+(parq?' · 🚗 '+parq:'')+'</div>'+
-    '<div class="cr">💰 <strong>'+(document.getElementById('smPrecio').value||'—')+'</strong>'+(negoc?' ('+negoc+')':'')+'</div>'+
-    (sel?'<div class="cr">✦ '+sel+'</div>':'')+
-    '<div class="cr">📸 '+(fc>0?fc+' foto(s)':'Sin fotos aún')+' · '+(document.getElementById('smVisita').value||'Por coordinar')+'</div>';
-}
-
-function previewSmFotos(input){
-  const prev=document.getElementById('smPreviews');
-  prev.innerHTML='';
-  [...input.files].slice(0,10).forEach(f=>{
-    const img=document.createElement('img');
-    img.src=URL.createObjectURL(f);
-    img.className='photo-thumb';
-    prev.appendChild(img);
-  });
-}
-
-function submitSm(){
-  document.querySelectorAll('#sellOv .oif-section').forEach(s=>s.style.display='none');
-  document.querySelector('.sell-modal .oif-steps').style.opacity='.25';
-  document.getElementById('smSuccess').style.display='block';
-}
-
-
-
-/* ── RESTORED MISSING FUNCTIONS ── */
 function moveAc(dir){
   stopAcAuto();
-  const w=document.getElementById('acWrap');
+  var w=document.getElementById('acWrap');
   if(!w) return;
-  const card=w.querySelector('.ac-card');
-  const cardW=card ? card.offsetWidth+18 : 338;
-  // Scroll exactly 1 card smoothly
+  var card=w.querySelector('.ac-card');
+  var cardW=card?card.offsetWidth+18:260;
   w.scrollBy({left:dir*cardW,behavior:'smooth'});
-  setTimeout(()=>{
-    const idx=Math.round(w.scrollLeft/cardW);
-    document.querySelectorAll('#acDots .cc-dot').forEach((d,i)=>d.classList.toggle('a',i===idx%5));
-    startAcAuto();
-  }, 500);
 }
 
 function acScrollTo(i){
-  const w=document.getElementById('acWrap');
+  var w=document.getElementById('acWrap');
   if(!w) return;
-  const card=w.querySelector('.ac-card');
-  const cardW=card?card.offsetWidth+22:282;
+  var card=w.querySelector('.ac-card');
+  var cardW=card?card.offsetWidth+18:260;
   w.scrollTo({left:i*cardW,behavior:'smooth'});
 }
 
-function toggleCaract(btn){
-  btn.classList.toggle('sel');
+/* ── SUPABASE LOAD PROPS ── */
+function mapProp(row){
+  var bgMap={Apartamento:'ap',Casa:'ca','Casa unifamiliar':'ca','Casa independiente':'ca',Finca:'ca',Oficina:'of',Local:'of'};
+  var emojiMap={Apartamento:'🏢',Casa:'🏡',Finca:'🌿',Oficina:'🏢'};
+  var tipo=row.tipo||'Apartamento';
+  var bg=bgMap[tipo]||'ap';
+  var priceNum=parseFloat(row.precio)||0;
+  var priceFmt=priceNum>0?'$'+priceNum.toLocaleString('es-CO'):(row.precio||'Consultar');
+  var feats=[];
+  try{feats=JSON.parse(row.caracteristicas||'[]');}catch(e){}
+  var gallery=[bg,bg,bg,bg,bg];
+  if(row.imagenes){
+    try{
+      var imgs=JSON.parse(row.imagenes);
+      if(Array.isArray(imgs)&&imgs.length>0){
+        gallery=imgs.map(function(u){return(u&&u.startsWith('http'))?u:bg;});
+        while(gallery.length<5) gallery.push(bg);
+      }
+    }catch(e){}
+  } else if(row.imagen&&row.imagen.startsWith('http')){
+    gallery=[row.imagen,bg,bg,bg,bg];
+  }
+  return{
+    id:row.id,name:row.titulo||'Sin título',tipo:tipo,
+    loc:(row.barrio?row.barrio+', ':'')+( row.ciudad||''),
+    ciudad:row.ciudad||'',price:priceFmt,
+    beds:parseInt(row.habitaciones)||0,baths:parseInt(row.banos)||1,
+    area:parseInt(row.area)||0,perm:row.permuta||false,
+    emoji:emojiMap[tipo]||'🏠',bg:bg,desc:row.descripcion||'',
+    feats:feats,gallery:gallery,
+    estrato:row.estrato||'',antiguedad:row.antiguedad||'',
+    parq:row.parqueadero||'',piso:row.piso||''
+  };
 }
 
-function handleSearch(){
-  const t=document.getElementById('st').value;
-  const u=document.getElementById('su').value;
-  if(!t&&!u){showToast('⚠️','Selecciona al menos un filtro','Tipo de propiedad o ubicación');return;}
-  showToast('✦','Búsqueda enviada','Un asesor te contactará pronto');
+async function loadPropsFromSupabase(){
+  if(!_supabase){useFallbackProps();renderCarousel();return;}
+  try{
+    var res=await _supabase.from('propiedades').select('*').eq('activo',true).or('vendido.is.null,vendido.eq.false').order('id',{ascending:true});
+    if(res.error) throw res.error;
+    if(res.data&&res.data.length>0){PROPS=res.data.map(mapProp);}
+    else{useFallbackProps();}
+  }catch(e){console.warn('[Supabase props]',e.message);useFallbackProps();}
+  renderCarousel();
 }
 
+/* ── ACADEMIA VIDEOS ── */
+var FALLBACK_VIDEOS=[
+  {titulo:'Cómo comprar tu primera propiedad',duracion:'12 min',nivel:'Básico',url_video:'',url_miniatura:'',emoji:'🏠',bg:'linear-gradient(135deg,#1a0d2e,#3b1865)'},
+  {titulo:'Crédito hipotecario paso a paso',duracion:'18 min',nivel:'Intermedio',url_video:'',url_miniatura:'',emoji:'🏦',bg:'linear-gradient(135deg,#0d1b35,#1a3460)'},
+  {titulo:'¿Qué es una permuta?',duracion:'10 min',nivel:'Básico',url_video:'',url_miniatura:'',emoji:'🔄',bg:'linear-gradient(135deg,#0d2318,#144d30)'},
+  {titulo:'Invertir en bienes raíces',duracion:'22 min',nivel:'Avanzado',url_video:'',url_miniatura:'',emoji:'📈',bg:'linear-gradient(135deg,#1a1500,#3d3000)'},
+  {titulo:'Cómo valuar un inmueble',duracion:'15 min',nivel:'Avanzado',url_video:'',url_miniatura:'',emoji:'📊',bg:'linear-gradient(135deg,#1a0505,#3d1010)'},
+];
 
-/* ── AGENDA MODAL FUNCTIONS ── */
-const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const DAYS_CAL=['D','L','M','X','J','V','S'];
-const TIMES_LIST=['8:00 AM','9:00 AM','10:00 AM','11:00 AM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'];
-const BOOKED_SLOTS=[1,4];
-let cProp=null,cStep=1,selD=null,selT=null,calY,calM;
+function buildVideoCard(v){
+  var bg=v.bg||'linear-gradient(135deg,#1a0d2e,#3b1865)';
+  var emoji=v.emoji||'📹';
+  var titulo=v.titulo||'Sin título';
+  var duracion=v.duracion||'';
+  var nivel=v.nivel||'';
+  var urlVideo=v.url_video||'';
+  var thumbBg=(v.url_miniatura&&v.url_miniatura.startsWith('http'))?'#0a1428':bg;
+  var thumbContent=(v.url_miniatura&&v.url_miniatura.startsWith('http'))
+    ?'<img src="'+v.url_miniatura+'" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">'
+    :'<span style="font-size:2rem">'+emoji+'</span>';
+  var onclick=urlVideo
+    ?'window.open(\''+urlVideo+'\',\'_blank\')'
+    :'showToast(\'📺\',\''+titulo+'\',\'Próximamente\')';
+  return '<div class="ac-card" onclick="'+onclick+'">'
+    +'<div class="ac-thumb" style="background:'+thumbBg+';display:flex;align-items:center;justify-content:center;overflow:hidden">'
+    +thumbContent+'<div class="ac-play">▶</div></div>'
+    +'<div class="ac-body">'
+    +(duracion||nivel?'<div class="ac-dur">'+(duracion?duracion+' · ':'')+nivel+'</div>':'')
+    +'<div class="ac-title">'+titulo+'</div>'
+    +'</div></div>';
+}
 
-function openModal(id){
-  cProp=PROPS.find(p=>p.id===id);
-  document.getElementById('mT').textContent='Agendar Visita';
-  document.getElementById('mP').textContent=cProp?cProp.name+' · '+cProp.loc:'';
-  resetM();
-  document.getElementById('mOv').classList.add('open');
+function renderFallbackVideos(){
+  var track=document.getElementById('acTrack');
+  if(track) track.innerHTML=FALLBACK_VIDEOS.map(buildVideoCard).join('');
+}
+
+async function loadVideosFromSupabase(){
+  var track=document.getElementById('acTrack');
+  if(!track) return;
+  if(!_supabase){renderFallbackVideos();try{initAcDrag();}catch(e){}return;}
+  try{
+    var res=await _supabase.from('videos').select('*').eq('activo',true).order('orden',{ascending:true});
+    if(res.error) throw res.error;
+    if(res.data&&res.data.length>0){track.innerHTML=res.data.map(buildVideoCard).join('');}
+    else{renderFallbackVideos();}
+  }catch(e){console.warn('[Supabase videos]',e.message);renderFallbackVideos();}
+  try{initAcDrag();}catch(e){}
+}
+
+/* ── SELL MODAL ── */
+function openSellModal(){
+  var ov=document.getElementById('sellOv');
+  if(!ov) return;
+  ov.classList.add('open');
   document.body.style.overflow='hidden';
+  ov.querySelectorAll('.oif-section').forEach(function(s){s.classList.remove('act');s.style.display='none';});
+  var s1=document.getElementById('sms-1');
+  if(s1){s1.classList.add('act');s1.style.display='block';}
+  ['sms1','sms2','sms3','sms4'].forEach(function(id){var el=document.getElementById(id);if(el)el.classList.remove('act','done');});
+  var e1=document.getElementById('sms1');if(e1)e1.classList.add('act');
+  var suc=document.getElementById('smSuccess');if(suc)suc.style.display='none';
+  var steps=ov.querySelector('.oif-steps');if(steps)steps.style.opacity='1';
 }
-
-function closeModal(){
-  document.getElementById('mOv').classList.remove('open');
+function closeSellModal(){
+  var ov=document.getElementById('sellOv');
+  if(ov)ov.classList.remove('open');
   document.body.style.overflow='';
 }
+function handleSellOv(e){if(e.target===document.getElementById('sellOv'))closeSellModal();}
+function goSm(s){
+  var ov=document.getElementById('sellOv');
+  if(!ov) return;
+  ov.querySelectorAll('.oif-section').forEach(function(el){el.classList.remove('act');});
+  var sec=document.getElementById('sms-'+s);
+  if(sec)sec.classList.add('act');
+  ['sms1','sms2','sms3','sms4'].forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(!el)return;
+    el.classList.remove('act','done');
+    if(i+1<s)el.classList.add('done');
+    else if(i+1===s)el.classList.add('act');
+  });
+  if(s===4)buildSmConfirm();
+}
+function buildSmConfirm(){
+  var sel=[...document.querySelectorAll('#smCaract .tg-btn.sel')].map(function(b){return b.textContent.trim();}).join(', ');
+  var fc=document.getElementById('smFotos')?document.getElementById('smFotos').files.length:0;
+  var barrio=document.getElementById('smBarrio')?document.getElementById('smBarrio').value:'';
+  var ciudad=document.getElementById('smCiudadProp')?document.getElementById('smCiudadProp').value:'';
+  var parq=document.getElementById('smParq')?document.getElementById('smParq').value:'';
+  var negoc=document.getElementById('smNegoc')?document.getElementById('smNegoc').value:'';
+  var box=document.getElementById('smConfBox');
+  if(!box)return;
+  box.innerHTML='<div class="cr">👤 <strong>'+(document.getElementById('smNombre')?document.getElementById('smNombre').value:'—')+'</strong> · '+(document.getElementById('smTel')?document.getElementById('smTel').value:'—')+'</div>'
+    +'<div class="cr">📍 <strong>'+(document.getElementById('smDir')?document.getElementById('smDir').value:'—')+'</strong>'+(barrio?' · '+barrio:'')+' · '+ciudad+'</div>'
+    +'<div class="cr">🏠 <strong>'+(document.getElementById('smTipo')?document.getElementById('smTipo').value:'—')+'</strong>'+'</div>'
+    +'<div class="cr">💰 <strong>'+(document.getElementById('smPrecio')?document.getElementById('smPrecio').value:'—')+'</strong>'+(negoc?' ('+negoc+')':'')+'</div>'
+    +(sel?'<div class="cr">✦ '+sel+'</div>':'')
+    +'<div class="cr">📸 '+(fc>0?fc+' foto(s)':'Sin fotos')+' · '+(document.getElementById('smVisita')?document.getElementById('smVisita').value:'Por coordinar')+'</div>';
+}
+function previewSmFotos(input){
+  var prev=document.getElementById('smPreviews');
+  if(!prev)return;
+  prev.innerHTML='';
+  Array.from(input.files).slice(0,10).forEach(function(f){
+    var img=document.createElement('img');
+    img.src=URL.createObjectURL(f);img.className='photo-thumb';
+    prev.appendChild(img);
+  });
+}
+function submitSm(){
+  var ov=document.getElementById('sellOv');
+  if(!ov)return;
+  ov.querySelectorAll('.oif-section').forEach(function(s){s.style.display='none';});
+  var steps=ov.querySelector('.oif-steps');if(steps)steps.style.opacity='.25';
+  var suc=document.getElementById('smSuccess');if(suc)suc.style.display='block';
+}
 
+/* ── AGENDA MODAL ── */
+var MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var DAYS_CAL=['D','L','M','X','J','V','S'];
+var TIMES_LIST=['8:00 AM','9:00 AM','10:00 AM','11:00 AM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'];
+var BOOKED_SLOTS=[1,4];
+var cProp=null,cStep=1,selD=null,selT=null,calY,calM;
+
+function openModal(id){
+  cProp=PROPS.find(function(p){return p.id===id;});
+  var mT=document.getElementById('mT');if(mT)mT.textContent='Agendar Visita';
+  var mP=document.getElementById('mP');if(mP)mP.textContent=cProp?cProp.name+' · '+cProp.loc:'';
+  resetM();
+  var mOv=document.getElementById('mOv');if(mOv)mOv.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  var mOv=document.getElementById('mOv');if(mOv)mOv.classList.remove('open');
+  document.body.style.overflow='';
+}
 function handleMOv(e){if(e.target===document.getElementById('mOv'))closeModal();}
-
 function resetM(){
   cStep=1;selD=null;selT=null;
-  const n=new Date();calY=n.getFullYear();calM=n.getMonth();
-  const suc=document.getElementById('sucSc');
-  if(suc) suc.style.display='none';
-  document.querySelectorAll('.fs').forEach(s=>{s.classList.remove('act');s.style.display='';});
-  document.querySelectorAll('.ag-st').forEach(s=>s.classList.remove('act','done'));
-  const fs1=document.getElementById('fs1');
-  if(fs1) fs1.classList.add('act');
-  const st1=document.getElementById('st1');
-  if(st1) st1.classList.add('act');
-  document.querySelectorAll('.ag-steps,.m-title,.m-prop').forEach(el=>el.style.opacity='1');
+  var n=new Date();calY=n.getFullYear();calM=n.getMonth();
+  var suc=document.getElementById('sucSc');if(suc)suc.style.display='none';
+  document.querySelectorAll('.fs').forEach(function(s){s.classList.remove('act');s.style.display='';});
+  document.querySelectorAll('.ag-st').forEach(function(s){s.classList.remove('act','done');});
+  var fs1=document.getElementById('fs1');if(fs1)fs1.classList.add('act');
+  var st1=document.getElementById('st1');if(st1)st1.classList.add('act');
+  document.querySelectorAll('.ag-steps,.m-title,.m-prop').forEach(function(el){el.style.opacity='1';});
 }
-
 function goS(s){
   cStep=s;
-  document.querySelectorAll('.fs').forEach(el=>el.classList.remove('act'));
-  document.querySelectorAll('.ag-st').forEach((el,i)=>{
+  document.querySelectorAll('.fs').forEach(function(el){el.classList.remove('act');});
+  document.querySelectorAll('.ag-st').forEach(function(el,i){
     el.classList.remove('act','done');
-    if(i+1<s) el.classList.add('done');
-    else if(i+1===s) el.classList.add('act');
+    if(i+1<s)el.classList.add('done');
+    else if(i+1===s)el.classList.add('act');
   });
-  const fs=document.getElementById('fs'+s);
-  if(fs) fs.classList.add('act');
-  if(s===2) renderCal();
-  if(s===3) renderT();
-  if(s===4) renderConf();
+  var fs=document.getElementById('fs'+s);if(fs)fs.classList.add('act');
+  if(s===2)renderCal();
+  if(s===3)renderT();
+  if(s===4)renderConf();
 }
-
 function chM(d){
   calM+=d;
   if(calM>11){calM=0;calY++;}
   else if(calM<0){calM=11;calY--;}
   renderCal();
 }
-
 function renderCal(){
-  const lbl=document.getElementById('cLbl');
-  if(lbl) lbl.textContent=MONTHS[calM]+' '+calY;
-  const g=document.getElementById('cGrid');
-  if(!g) return;
-  const today=new Date();
-  const fd=new Date(calY,calM,1).getDay();
-  const dim=new Date(calY,calM+1,0).getDate();
-  let h=DAYS_CAL.map(d=>'<div class="ch">'+d+'</div>').join('');
-  for(let i=0;i<fd;i++) h+='<div class="cd emp"></div>';
-  for(let d=1;d<=dim;d++){
-    const dt=new Date(calY,calM,d);
-    const past=dt<new Date(today.getFullYear(),today.getMonth(),today.getDate());
-    const isTod=dt.toDateString()===today.toDateString();
-    const isSel=selD&&dt.toDateString()===selD.toDateString();
-    const isSun=dt.getDay()===0;
-    const dis=past||isSun;
-    const cls='cd'+(dis?' dis':'')+(isTod?' tod':'')+(isSel?' sel':'');
+  var lbl=document.getElementById('cLbl');
+  if(lbl)lbl.textContent=MONTHS[calM]+' '+calY;
+  var g=document.getElementById('cGrid');
+  if(!g)return;
+  var today=new Date();
+  var fd=new Date(calY,calM,1).getDay();
+  var dim=new Date(calY,calM+1,0).getDate();
+  var h=DAYS_CAL.map(function(d){return '<div class="ch">'+d+'</div>';}).join('');
+  for(var i=0;i<fd;i++) h+='<div class="cd emp"></div>';
+  for(var d=1;d<=dim;d++){
+    var dt=new Date(calY,calM,d);
+    var past=dt<new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    var isTod=dt.toDateString()===today.toDateString();
+    var isSel=selD&&dt.toDateString()===selD.toDateString();
+    var isSun=dt.getDay()===0;
+    var dis=past||isSun;
+    var cls='cd'+(dis?' dis':'')+(isTod?' tod':'')+(isSel?' sel':'');
     h+='<div class="'+cls+'"'+(dis?'':' onclick="pickD('+calY+','+calM+','+d+')"')+'>'+d+'</div>';
   }
   g.innerHTML=h;
 }
-
 function pickD(y,m,d){
-  selD=new Date(y,m,d);
-  renderCal();
-  const btn=document.getElementById('s2n');
-  if(btn) btn.disabled=false;
+  selD=new Date(y,m,d);renderCal();
+  var btn=document.getElementById('s2n');if(btn)btn.disabled=false;
 }
-
 function renderT(){
-  const grid=document.getElementById('tGrid');
-  if(!grid) return;
-  grid.innerHTML=TIMES_LIST.map((t,i)=>{
-    const bk=BOOKED_SLOTS.includes(i), sel=selT===t;
-    return '<div class="ts'+(bk?' bk':'')+(sel?' sel':'')+'"'+(bk?'':' onclick="pickT(TIMES_LIST['+i+'])"')+'>'+t+(bk?'<br><small style="font-size:.64rem">Ocupado</small>':'')+'</div>';
+  var grid=document.getElementById('tGrid');
+  if(!grid)return;
+  grid.innerHTML=TIMES_LIST.map(function(t,i){
+    var bk=BOOKED_SLOTS.includes(i),sel=selT===t;
+    return '<div class="ts'+(bk?' bk':'')+(sel?' sel':'')+'"'+(bk?'':' onclick="pickT(\''+t+'\')"')+'>'+t+(bk?'<br><small style="font-size:.64rem">Ocupado</small>':'')+'</div>';
   }).join('');
 }
-
 function pickT(t){
   selT=t;renderT();
-  const btn=document.getElementById('s3n');
-  if(btn) btn.disabled=false;
+  var btn=document.getElementById('s3n');if(btn)btn.disabled=false;
 }
-
 function renderConf(){
-  const ds=selD?selD.toLocaleDateString('es-CO',{weekday:'long',month:'long',day:'numeric',year:'numeric'}):'';
-  const box=document.getElementById('cBox');
-  if(!box) return;
+  var ds=selD?selD.toLocaleDateString('es-CO',{weekday:'long',month:'long',day:'numeric',year:'numeric'}):'';
+  var box=document.getElementById('cBox');
+  if(!box)return;
+  var aN=document.getElementById('aN');
+  var aT=document.getElementById('aT');
+  var aM=document.getElementById('aM');
   box.innerHTML=[
-    ['👤','Nombre',document.getElementById('aN')?document.getElementById('aN').value:'—'],
-    ['📞','Teléfono',document.getElementById('aT')?document.getElementById('aT').value:'—'],
-    cProp?['🏠','Propiedad',cProp.name]:[],
+    ['👤','Nombre',aN?aN.value:'—'],
+    ['📞','Teléfono',aT?aT.value:'—'],
+    cProp?['🏠','Propiedad',cProp.name]:null,
     ['📅','Fecha',ds],
     ['⏰','Hora',selT||'—'],
-    ['🎯','Modalidad',document.getElementById('aM')?document.getElementById('aM').value:'—']
-  ].filter(r=>r.length).map(function(r){return '<div class="cr">'+r[0]+' '+r[1]+': <strong>'+r[2]+'</strong></div>';}).join('');
+    ['🎯','Modalidad',aM?aM.value:'—']
+  ].filter(function(r){return r;}).map(function(r){return '<div class="cr">'+r[0]+' '+r[1]+': <strong>'+r[2]+'</strong></div>';}).join('');
 }
-
 function submitA(){
-  document.querySelectorAll('.fs').forEach(s=>s.style.display='none');
-  document.querySelectorAll('.ag-steps').forEach(el=>el.style.opacity='.25');
-  const ds=selD?selD.toLocaleDateString('es-CO',{weekday:'long',month:'long',day:'numeric'}):'';
-  const sucBox=document.getElementById('sucBox');
-  if(sucBox) sucBox.innerHTML='<div class="cr">📅 <strong>'+ds+' · '+selT+'</strong></div><div class="cr">🎯 <strong>'+(document.getElementById('aM')?document.getElementById('aM').value:'')+'</strong></div><div class="cr">💬 Te contactaremos al <strong>'+(document.getElementById('aT')?document.getElementById('aT').value:'número indicado')+'</strong></div>';
-  const suc=document.getElementById('sucSc');
-  if(suc) suc.style.display='block';
+  document.querySelectorAll('.fs').forEach(function(s){s.style.display='none';});
+  document.querySelectorAll('.ag-steps').forEach(function(el){el.style.opacity='.25';});
+  var ds=selD?selD.toLocaleDateString('es-CO',{weekday:'long',month:'long',day:'numeric'}):'';
+  var sucBox=document.getElementById('sucBox');
+  var aT=document.getElementById('aT');var aM=document.getElementById('aM');
+  if(sucBox)sucBox.innerHTML='<div class="cr">📅 <strong>'+ds+' · '+selT+'</strong></div><div class="cr">🎯 <strong>'+(aM?aM.value:'')+'</strong></div><div class="cr">💬 Te contactaremos al <strong>'+(aT?aT.value:'número indicado')+'</strong></div>';
+  var suc=document.getElementById('sucSc');if(suc)suc.style.display='block';
 }
-
 
 /* ── PROPERTY DETAIL MODAL ── */
-const GALLERY_BG = {
-  ap: ['linear-gradient(135deg,#0d1b35,#1a3460)','linear-gradient(135deg,#0a1e3d,#123060)','linear-gradient(135deg,#0d2048,#1a3a70)','linear-gradient(135deg,#081530,#0f2550)','linear-gradient(135deg,#0a1828,#152d55)'],
-  ca: ['linear-gradient(135deg,#1a0d2e,#3b1865)','linear-gradient(135deg,#1a0833,#2d1568)','linear-gradient(135deg,#15082a,#280d58)','linear-gradient(135deg,#1c0a38,#321a6a)','linear-gradient(135deg,#120620,#221050)'],
-  of: ['linear-gradient(135deg,#0a1e2e,#0f2d45)','linear-gradient(135deg,#081828,#0d2840)','linear-gradient(135deg,#0c2035,#11304a)','linear-gradient(135deg,#0a1c2e,#0e2840)','linear-gradient(135deg,#071520,#0b2235)'],
+var GALLERY_BG={
+  ap:['linear-gradient(135deg,#0d1b35,#1a3460)','linear-gradient(135deg,#0a1e3d,#123060)','linear-gradient(135deg,#0d2048,#1a3a70)','linear-gradient(135deg,#081530,#0f2550)','linear-gradient(135deg,#0a1828,#152d55)'],
+  ca:['linear-gradient(135deg,#1a0d2e,#3b1865)','linear-gradient(135deg,#1a0833,#2d1568)','linear-gradient(135deg,#15082a,#280d58)','linear-gradient(135deg,#1c0a38,#321a6a)','linear-gradient(135deg,#120620,#221050)'],
+  of:['linear-gradient(135deg,#0a1e2e,#0f2d45)','linear-gradient(135deg,#081828,#0d2840)','linear-gradient(135deg,#0c2035,#11304a)','linear-gradient(135deg,#0a1c2e,#0e2840)','linear-gradient(135deg,#071520,#0b2235)'],
 };
-const GALLERY_EMOJI = {ap:'🏢',ca:'🏡',of:'🏢'};
-
-let pdCurrentProp = null;
-let pdCurrentImg = 0;
+var GALLERY_EMOJI={ap:'🏢',ca:'🏡',of:'🏢'};
+var pdCurrentProp=null,pdCurrentImg=0;
 
 function openPropDetail(id){
-  const p = PROPS.find(x=>x.id===id);
-  if(!p) return;
-  pdCurrentProp = p;
-  pdCurrentImg = 0;
-
-  // Gallery — supports real image URLs from Supabase OR emoji placeholders
-  const gallery = p.gallery || [p.bg,p.bg,p.bg];
-  const mainImg = document.getElementById('pdMainImg');
-  function renderMainImg(src, bg, idx){
-    if(src && src.startsWith('http')){
-      mainImg.style.background = '#0a1428';
-      mainImg.innerHTML = '<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;border-radius:0" onerror="this.parentNode.innerHTML=\'<span style=\"font-size:5rem\">🏠</span>\'">';
-    } else {
-      mainImg.style.background = GALLERY_BG[bg||'ap'][idx%5];
-      mainImg.innerHTML = '<span style="font-size:5rem;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))">'+(GALLERY_EMOJI[bg||'ap']||'🏠')+'</span>';
-    }
-  }
-  renderMainImg(gallery[0] && gallery[0].startsWith('http') ? gallery[0] : null, gallery[0], 0);
-  const counter = document.getElementById('pdCounter');
-  if(counter) counter.textContent = '1 / ' + gallery.length;
-
-  const thumbsEl = document.getElementById('pdThumbs');
-  thumbsEl.innerHTML = gallery.map((src,i)=>{
-    const isUrl = src && src.startsWith('http');
-    const bg2 = isUrl ? '#0a1428' : (GALLERY_BG[src||'ap'][i%5]);
-    const inner = isUrl
-      ? '<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;border-radius:6px" onerror="this.style.display=\'none\'">'
-      : (GALLERY_EMOJI[src||'ap']||'🏠');
-    return '<div class="pd-thumb'+(i===0?' active':'')+'" onclick="pdSelectImg('+i+')" style="background:'+bg2+'">'+inner+'</div>';
+  var p=PROPS.find(function(x){return x.id===id;});
+  if(!p)return;
+  pdCurrentProp=p;pdCurrentImg=0;
+  var gallery=p.gallery||[p.bg,p.bg,p.bg,p.bg,p.bg];
+  var mainImg=document.getElementById('pdMainImg');
+  if(!mainImg)return;
+  renderMainImg(gallery[0]&&gallery[0].startsWith('http')?gallery[0]:null,gallery[0],0);
+  var counter=document.getElementById('pdCounter');
+  if(counter)counter.textContent='1 / '+gallery.length;
+  var thumbsEl=document.getElementById('pdThumbs');
+  if(thumbsEl)thumbsEl.innerHTML=gallery.map(function(src,i){
+    var isUrl=src&&src.startsWith('http');
+    var tbg=isUrl?'#0a1428':(GALLERY_BG[src||'ap']?GALLERY_BG[src||'ap'][i%5]:'#0a1428');
+    var inner=isUrl?'<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;border-radius:6px" onerror="this.style.display=\'none\'">':(GALLERY_EMOJI[src||'ap']||'🏠');
+    return '<div class="pd-thumb'+(i===0?' active':'')+'" onclick="pdSelectImg('+i+')" style="background:'+tbg+'">'+inner+'</div>';
   }).join('');
-
-  // Header
-  document.getElementById('pdTipo').textContent = p.tipo;
-  document.getElementById('pdName').textContent = p.name;
-  document.getElementById('pdLoc').innerHTML = '📍 ' + p.loc;
-  document.getElementById('pdPrice').textContent = p.price;
-
-  // Specs
-  const specs = [];
-  if(p.beds>0) specs.push('🛏 '+p.beds+' hab.');
+  var pdTipo=document.getElementById('pdTipo');if(pdTipo)pdTipo.textContent=p.tipo;
+  var pdName=document.getElementById('pdName');if(pdName)pdName.textContent=p.name;
+  var pdLoc=document.getElementById('pdLoc');if(pdLoc)pdLoc.innerHTML='📍 '+p.loc;
+  var pdPrice=document.getElementById('pdPrice');if(pdPrice)pdPrice.textContent=p.price;
+  var specs=[];
+  if(p.beds>0)specs.push('🛏 '+p.beds+' hab.');
   specs.push('🚿 '+p.baths+' baños');
   specs.push('📐 '+p.area+' m²');
-  if(p.estrato) specs.push('🏘 '+p.estrato);
-  if(p.parq) specs.push('🚗 '+p.parq);
-  if(p.antiguedad) specs.push('📅 '+p.antiguedad);
-  if(p.piso) specs.push('🏗 '+p.piso);
-  if(p.perm) specs.push('🔄 Permuta');
-  document.getElementById('pdSpecs').innerHTML = specs.map(s=>'<div class="pd-spec">'+s+'</div>').join('');
-
-  // Description
-  document.getElementById('pdDesc').textContent = p.desc || 'Propiedad disponible. Contáctanos para más información.';
-
-  // Features
-  const feats = p.feats || [];
-  document.getElementById('pdFeats').innerHTML = feats.map(f=>'<div class="pd-feat">'+f+'</div>').join('') || '<div class="pd-feat">Consultar características</div>';
-
-  // Agendar button
-  document.getElementById('pdAgendarBtn').onclick = function(){closePropDetail(); openModal(p.id);};
-
-  // Open
-  document.getElementById('pdOv').classList.add('open');
+  if(p.estrato)specs.push('🏘 '+p.estrato);
+  if(p.parq)specs.push('🚗 '+p.parq);
+  if(p.antiguedad)specs.push('📅 '+p.antiguedad);
+  if(p.piso)specs.push('🏗 '+p.piso);
+  if(p.perm)specs.push('🔄 Permuta');
+  var pdSpecs=document.getElementById('pdSpecs');
+  if(pdSpecs)pdSpecs.innerHTML=specs.map(function(s){return '<div class="pd-spec">'+s+'</div>';}).join('');
+  var pdDesc=document.getElementById('pdDesc');if(pdDesc)pdDesc.textContent=p.desc||'';
+  var pdFeats=document.getElementById('pdFeats');
+  if(pdFeats)pdFeats.innerHTML=(p.feats||[]).map(function(f){return '<div class="pd-feat">'+f+'</div>';}).join('')||'<div class="pd-feat">Consultar características</div>';
+  var agBtn=document.getElementById('pdAgendarBtn');
+  if(agBtn)agBtn.onclick=function(){closePropDetail();openModal(p.id);};
+  var ov=document.getElementById('pdOv');if(ov)ov.classList.add('open');
   document.body.style.overflow='hidden';
 }
 
-function pdSelectImg(i){
-  const p = pdCurrentProp;
-  if(!p) return;
-  const gallery = p.gallery || [p.bg];
-  pdCurrentImg = ((i % gallery.length) + gallery.length) % gallery.length;
-  const src = gallery[pdCurrentImg];
-  const isUrl = src && src.startsWith('http');
-  const mainImg = document.getElementById('pdMainImg');
-  if(isUrl){
+function renderMainImg(src,bg,idx){
+  var mainImg=document.getElementById('pdMainImg');
+  if(!mainImg)return;
+  if(src&&src.startsWith('http')){
     mainImg.style.background='#0a1428';
-    mainImg.innerHTML='<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;border-radius:0" onerror="this.parentNode.innerHTML=\'<span style=\"font-size:5rem\">🏠</span>\'">';
-  } else {
-    mainImg.style.background = GALLERY_BG[src||'ap'][pdCurrentImg%5];
-    mainImg.innerHTML = '<span style="font-size:5rem;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))">'+(GALLERY_EMOJI[src||'ap']||'🏠')+'</span>';
+    mainImg.innerHTML='<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;border-radius:0" onerror="this.parentNode.innerHTML=\'<span style=\\\"font-size:5rem\\\">🏠</span>\'">';
+  }else{
+    var bgStr=(bg&&GALLERY_BG[bg])?GALLERY_BG[bg][idx%5]:'linear-gradient(135deg,#0d1b35,#1a3460)';
+    mainImg.style.background=bgStr;
+    mainImg.innerHTML='<span style="font-size:5rem;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))">'+(GALLERY_EMOJI[bg||'ap']||'🏠')+'</span>';
   }
-  document.querySelectorAll('.pd-thumb').forEach((t,idx)=>t.classList.toggle('active',idx===pdCurrentImg));
-  const counter = document.getElementById('pdCounter');
-  if(counter) counter.textContent = (pdCurrentImg+1)+' / '+gallery.length;
 }
 
-function pdNav(dir){
-  pdSelectImg(pdCurrentImg + dir);
+function pdSelectImg(i){
+  var p=pdCurrentProp;if(!p)return;
+  var gallery=p.gallery||[p.bg];
+  pdCurrentImg=((i%gallery.length)+gallery.length)%gallery.length;
+  var src=gallery[pdCurrentImg];
+  var isUrl=src&&src.startsWith('http');
+  renderMainImg(isUrl?src:null,src,pdCurrentImg);
+  document.querySelectorAll('.pd-thumb').forEach(function(t,idx){t.classList.toggle('active',idx===pdCurrentImg);});
+  var counter=document.getElementById('pdCounter');
+  if(counter)counter.textContent=(pdCurrentImg+1)+' / '+gallery.length;
 }
-
+function pdNav(dir){pdSelectImg(pdCurrentImg+dir);}
 function closePropDetail(){
-  document.getElementById('pdOv').classList.remove('open');
+  var ov=document.getElementById('pdOv');if(ov)ov.classList.remove('open');
   document.body.style.overflow='';
 }
 
-// Swipe support for gallery
+// Swipe for gallery
 (function(){
-  let ts=0,tx=0;
-  document.addEventListener('touchstart',e=>{
-    if(!e.target.closest('.pd-img-wrap')) return;
-    ts=e.touches[0].clientX; tx=0;
-  },{passive:true});
-  document.addEventListener('touchend',e=>{
-    if(!e.target.closest('.pd-img-wrap')) return;
-    tx=e.changedTouches[0].clientX-ts;
-    if(Math.abs(tx)>40) pdNav(tx<0?1:-1);
-  },{passive:true});
+  var ts=0;
+  document.addEventListener('touchstart',function(e){if(!e.target.closest('.pd-img-wrap'))return;ts=e.touches[0].clientX;},{passive:true});
+  document.addEventListener('touchend',function(e){if(!e.target.closest('.pd-img-wrap'))return;var tx=e.changedTouches[0].clientX-ts;if(Math.abs(tx)>40)pdNav(tx<0?1:-1);},{passive:true});
 })();
 
-
-/* ════════════════════════════════════════════
-   SUPABASE DATA LOADING
-   ════════════════════════════════════════════ */
-
-// Map Supabase row → internal property object
-function mapProp(row) {
-  // Determine visual style from tipo
-  const bgMap = {
-    'Apartamento': 'ap',
-    'Casa': 'ca',
-    'Oficina': 'of',
-    'Local': 'of',
-    'Finca': 'ca',
-    'Lote': 'ca',
-  };
-  const emojiMap = {
-    'Apartamento': '🏢',
-    'Casa': '🏡',
-    'Oficina': '🏢',
-    'Local': '🏢',
-    'Finca': '🌿',
-    'Lote': '🌾',
-  };
-  const tipo = row.tipo || 'Apartamento';
-  const bg = bgMap[tipo] || 'ap';
-
-  // Format price with dots
-  const priceNum = parseFloat(row.precio) || 0;
-  const priceFmt = priceNum > 0
-    ? '$' + priceNum.toLocaleString('es-CO')
-    : row.precio || 'Consultar';
-
-  // Build features from imagen field (JSON array) or empty
-  let feats = [];
-  try { feats = JSON.parse(row.caracteristicas || '[]'); } catch(e) {}
-
-  // Gallery: parse imagenes (JSON array from Supabase) for all photos
-  let gallery = [bg, bg, bg, bg, bg];
-  let imgUrl = null;
-
-  // Try imagenes column first (JSON array of URLs)
-  if (row.imagenes) {
-    try {
-      const imgs = JSON.parse(row.imagenes);
-      if (Array.isArray(imgs) && imgs.length > 0) {
-        // Fill gallery with real URLs, pad remaining with bg theme
-        gallery = imgs.map(u => (u && u.startsWith('http')) ? u : bg);
-        while (gallery.length < 5) gallery.push(bg);
-        imgUrl = imgs[0] || null;
-      }
-    } catch(e) {}
-  }
-  // Fallback to single imagen column
-  if (!imgUrl && row.imagen && row.imagen.startsWith('http')) {
-    imgUrl = row.imagen;
-    gallery = [row.imagen, bg, bg, bg, bg];
-  }
-
-  return {
-    id:          row.id,
-    name:        row.titulo || 'Sin título',
-    tipo:        tipo,
-    loc:         row.ciudad || '',
-    ciudad:      row.ciudad || '',
-    price:       priceFmt,
-    beds:        parseInt(row.habitaciones) || 0,
-    baths:       parseInt(row.banos) || 0,
-    area:        parseInt(row.area) || 0,
-    perm:        row.permuta || false,
-    emoji:       emojiMap[tipo] || '🏠',
-    bg:          bg,
-    desc:        row.descripcion || '',
-    feats:       feats,
-    gallery:     gallery,
-    imgUrl:      imgUrl,
-    // Extra fields
-    estrato:     row.estrato || '',
-    antiguedad:  row.antiguedad || '',
-    parq:        row.parqueadero || '',
-    piso:        row.piso || '',
-  };
+/* ── SEARCH ── */
+function handleSearch(){
+  var t=document.getElementById('st');
+  var u=document.getElementById('su');
+  var tv=t?t.value:'';var uv=u?u.value:'';
+  if(!tv&&!uv){showToast('⚠️','Selecciona al menos un filtro','Tipo de propiedad o ubicación');return;}
+  showToast('✦','Búsqueda enviada','Un asesor te contactará pronto');
 }
 
-// Load properties from Supabase
-async function loadPropsFromSupabase() {
-  if (!_supabase) {
-    console.warn('[Supabase] SDK no disponible. Usando fallback.');
-    useFallbackProps();
-    renderCarousel(); initAcDots(); reinitCardEffects();
-    return;
-  }
-
-  // Loading state
-  const track = document.getElementById('ct');
-  if (track) track.innerHTML = '<div style="display:flex;align-items:center;gap:.8rem;padding:2rem;color:rgba(255,255,255,.5);font-size:.85rem"><div class="prop-loader"></div>Cargando propiedades...</div>';
-
-  try {
-    console.log('[Supabase] Consultando tabla propiedades...');
-
-    const { data, error } = await _supabase
-      .from('propiedades')
-      .select('*')
-      .eq('activo', true)
-      .or('vendido.is.null,vendido.eq.false')
-      .order('id', { ascending: true });
-
-    if (error) {
-      console.error('[Supabase] Error en query:', error.message, error.code, error.hint);
-      throw error;
-    }
-
-    console.log('[Supabase] Respuesta recibida. Filas:', data ? data.length : 0);
-
-    if (data && data.length > 0) {
-      PROPS = data.map(mapProp);
-      console.log('[Supabase] ✓ Propiedades mapeadas:', PROPS.length);
-    } else {
-      console.warn('[Supabase] Sin resultados. Verifica: activo=true y vendido=false en la tabla.');
-      useFallbackProps();
-    }
-  } catch (err) {
-    console.error('[Supabase] Fallo general:', err.message || err);
-    useFallbackProps();
-  }
-
-  renderCarousel();
-  initAcDots();
-  reinitCardEffects();
-}
-
-// Fallback: datos de ejemplo si Supabase falla
-function useFallbackProps() {
-  PROPS = [
-    {id:1,name:'Apto Pinares',tipo:'Apartamento',loc:'Pinares, Pereira',ciudad:'Pereira',price:'$380.000.000',beds:3,baths:2,area:85,perm:false,emoji:'🏢',bg:'ap',estrato:'Estrato 4',antiguedad:'5 años',parq:'1 parqueadero',piso:'Piso 8',desc:'Hermoso apartamento en el exclusivo sector de Pinares con acabados premium.',feats:['🚗 Garaje','🔐 Conjunto cerrado','🛗 Ascensor','🌇 Vista panorámica'],gallery:['ap','ca','of','ap','ca']},
-    {id:2,name:'Casa El Poblado',tipo:'Casa',loc:'El Poblado, Pereira',ciudad:'Pereira',price:'$650.000.000',beds:4,baths:3,area:180,perm:true,emoji:'🏡',bg:'ca',estrato:'Estrato 5',antiguedad:'8 años',parq:'2 parqueaderos',piso:'Casa independiente',desc:'Amplia casa en conjunto residencial cerrado de El Poblado.',feats:['🚗 Garaje doble','🌿 Jardín privado','🔐 Conjunto cerrado'],gallery:['ca','ap','of','ca','ap']},
-    {id:3,name:'Apto Dosquebradas',tipo:'Apartamento',loc:'Centro, Dosquebradas',ciudad:'Dosquebradas',price:'$220.000.000',beds:2,baths:1,area:55,perm:false,emoji:'🏗️',bg:'ap',estrato:'Estrato 3',antiguedad:'3 años',parq:'1 parqueadero',piso:'Piso 5',desc:'Apartamento moderno en el centro de Dosquebradas.',feats:['🚗 Parqueadero','🛗 Ascensor'],gallery:['ap','of','ca','ap','of']},
-    {id:4,name:'Finca Termales',tipo:'Finca',loc:'Vereda Termales, Santa Rosa',ciudad:'Santa Rosa de Cabal',price:'$750.000.000',beds:4,baths:3,area:320,perm:true,emoji:'🌿',bg:'ca',estrato:'Rural',antiguedad:'15 años',parq:'Amplio',piso:'Casa 1 piso',desc:'Espectacular finca en Vereda Termales rodeada de naturaleza.',feats:['🌿 Jardín extenso','🏊 Zona de piscina','🌾 Cultivos'],gallery:['ca','of','ap','ca','of']},
-  ];
-}
-
-
-/* ════════════════════════════════════════════
-   ACADEMIA VIDEOS — Loaded from Supabase
-   Table: videos
-   Columns: id, titulo, duracion, nivel, url_video, url_miniatura, descripcion, activo, orden
-   ════════════════════════════════════════════ */
-
-const FALLBACK_VIDEOS = [
-  {titulo:'Cómo comprar tu primera propiedad',     duracion:'12 min',nivel:'Básico',     url_video:'',url_miniatura:'',emoji:'🏠',bg:'linear-gradient(135deg,#1a0d2e,#3b1865)'},
-  {titulo:'Crédito hipotecario paso a paso',        duracion:'18 min',nivel:'Intermedio', url_video:'',url_miniatura:'',emoji:'🏦',bg:'linear-gradient(135deg,#0d1b35,#1a3460)'},
-  {titulo:'¿Qué es una permuta y cómo funciona?',  duracion:'10 min',nivel:'Básico',     url_video:'',url_miniatura:'',emoji:'🔄',bg:'linear-gradient(135deg,#0d2318,#144d30)'},
-  {titulo:'Cómo invertir en bienes raíces',        duracion:'22 min',nivel:'Avanzado',   url_video:'',url_miniatura:'',emoji:'📈',bg:'linear-gradient(135deg,#1a1500,#3d3000)'},
-  {titulo:'Cómo valuar correctamente un inmueble', duracion:'15 min',nivel:'Avanzado',   url_video:'',url_miniatura:'',emoji:'📊',bg:'linear-gradient(135deg,#1a0505,#3d1010)'},
-];
-
-const NIVEL_BG = {
-  'Básico':     'linear-gradient(135deg,#0d2318,#144d30)',
-  'Intermedio': 'linear-gradient(135deg,#0d1b35,#1a3460)',
-  'Avanzado':   'linear-gradient(135deg,#1a0505,#3d1010)',
-};
-
-function buildVideoCard(v){
-  const bg       = v.bg || NIVEL_BG[v.nivel] || 'linear-gradient(135deg,#1a0d2e,#3b1865)';
-  const emoji    = v.emoji || '📹';
-  const duracion = v.duracion || '';
-  const nivel    = v.nivel || '';
-  const titulo   = v.titulo || 'Sin título';
-  const urlVideo = v.url_video || '';
-
-  // Thumbnail: real image if available, else colored background with emoji
-  const thumbContent = (v.url_miniatura && v.url_miniatura.startsWith('http'))
-    ? '<img src="'+v.url_miniatura+'" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.style.background=''+bg+'';this.remove()">'
-    : '<span style="font-size:2rem">'+emoji+'</span>';
-
-  const thumbBg = (v.url_miniatura && v.url_miniatura.startsWith('http')) ? '#0a1428' : bg;
-
-  const onclick = urlVideo
-    ? 'window.open("'+urlVideo+'","_blank")'
-    : 'showToast('📺',''+titulo+'','Próximamente')';
-
-  return '<div class="ac-card" onclick="'+onclick+'">'
-    +'<div class="ac-thumb" style="background:'+thumbBg+';display:flex;align-items:center;justify-content:center;overflow:hidden">'
-    +thumbContent
-    +'<div class="ac-play">▶</div>'
-    +'</div>'
-    +'<div class="ac-body">'
-    +(duracion||nivel ? '<div class="ac-dur">'+(duracion?duracion+' · ':'')+nivel+'</div>' : '')
-    +'<div class="ac-title">'+titulo+'</div>'
-    +'</div>'
-    +'</div>';
-}
-
-async function loadVideosFromSupabase(){
-  const track = document.getElementById('acTrack');
-  if(!track) return;
-
-  if(!_supabase){
-    console.warn('[Academia] Supabase no disponible. Usando videos de ejemplo.');
-    renderFallbackVideos();
-    return;
-  }
-
-  try {
-    console.log('[Academia] Consultando tabla videos...');
-
-    const {data, error} = await _supabase
-      .from('videos')
-      .select('*')
-      .eq('activo', true)
-      .order('orden', {ascending:true});
-
-    if(error){
-      // Table might not exist yet — silently use fallback
-      console.warn('[Academia] Error o tabla no existe:', error.message, '— usando videos de ejemplo.');
-      renderFallbackVideos();
-      return;
-    }
-
-    console.log('[Academia] Videos recibidos:', data ? data.length : 0);
-
-    if(data && data.length > 0){
-      track.innerHTML = data.map(buildVideoCard).join('');
-      console.log('[Academia] ✓ Videos cargados desde Supabase.');
-    } else {
-      console.warn('[Academia] Tabla videos vacía — usando videos de ejemplo.');
-      renderFallbackVideos();
-    }
-  } catch(err){
-    console.error('[Academia] Fallo:', err.message||err);
-    renderFallbackVideos();
-  }
-
-  // Re-init drag after cards are rendered
-  initAcDrag();
-  initAcDots();
-}
-
-function renderFallbackVideos(){
-  const track = document.getElementById('acTrack');
-  if(track) track.innerHTML = FALLBACK_VIDEOS.map(buildVideoCard).join('');
+/* ── MISC ── */
+function toggleCaract(btn){btn.classList.toggle('sel');}
+function goOif(s){}
+function buildOifConfirm(){}
+function previewOifFotos(input){}
+function submitOif(){}
+function initOwnItems(){
+  document.querySelectorAll('.own-item').forEach(function(item){
+    item.addEventListener('mouseenter',function(){item.classList.add('hov');});
+    item.addEventListener('mouseleave',function(){item.classList.remove('hov');});
+  });
 }
 
 /* ── INIT ── */
-// renderCarousel() is now called by loadPropsFromSupabase()
+useFallbackProps();
+renderCarousel();
+renderFallbackVideos();
+initAcDrag();
 loadPropsFromSupabase();
 loadVideosFromSupabase();
-// initAcDrag called after videos load
-initReveal();
-initStats();
-
-/* ── PREMIUM MOTION INIT ── */
-initPremiumReveal();
-initParticles();
-initAcTilt();
-initMagneticBtns();
-initPropTilt();
-animateCounters();
-initActiveNav();
-initScrollProgress();
-initCursorTrail();
 initOwnItems();
 reinitCardEffects();
 </script>
